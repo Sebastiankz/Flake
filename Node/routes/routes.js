@@ -1,7 +1,7 @@
 //archivo que define las rutas de la de la API
 
 import express from 'express';
-import { getAllRegisters, getOneRegister, createRegister, updateRegister, deleteRegister } from '../controllers/BlogController.js';
+import { getAllRegisters, getOneRegister, createRegister, updateRegister, deleteRegister } from '../controllers/userController.js';
 
 const router = express.Router();
 

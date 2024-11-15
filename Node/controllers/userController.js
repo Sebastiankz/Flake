@@ -1,4 +1,4 @@
-import UserModel from "../models/UsersModel.js";
+import UserModel from "../models/UserModelTemp.js";
 
 
 //methods for CRUD operations
@@ -53,11 +53,12 @@ export const createRegister = async (req, res) => {
 //update a register
 export const updateRegister = async (req, res) => {
     try {
-        await UserModel.update(req.body, {
+        const register = await UserModel.findOne({
             where: {
                 id: req.params.id
             }
         });
+        
         if (register) {
             await register.update(req.body);
             res.status(200).json(register);  // 200 para respuesta exitosa
@@ -71,7 +72,8 @@ export const updateRegister = async (req, res) => {
             message: error.message
         });
     }
-}
+};
+
 
 
 //delete a register
