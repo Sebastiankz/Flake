@@ -98,73 +98,26 @@ export const updateProfesor = async (req, res) => {
     try {
         const { id_profesor } = req.params;
 
-        const {
-            tipo_id,
-            prim_nom,
-            seg_nom,
-            prim_apell,
-            seg_apell,
-            username,
-            password,
-            genero,
-            celular,
-            edad,
-            direccion,
-            correo,
-            id_cargo
-        } = req.body;
-
-        // Validar que al menos uno de los campos esté presente
-        if (
-            !tipo_id && !prim_nom && !prim_apell && !username && !password && !correo && !direccion
-            && !seg_nom && !seg_apell && !genero && !celular && !edad && !id_cargo
-        ) {
-            return res.status(400).json({
-                message: 'Debe proporcionar al menos un campo para actualizar'
-            });
+        if (req.body.password) {
+            req.body.password = await bcrypt.hash(req.body.password, 10);
         }
 
-        // Buscar el profesor en la base de datos
-        const profesor = await ProfesorModel.findOne({
+        const [updatedRows] = await ProfesorModel.update(req.body, {
             where: { id_profesor }
         });
 
-        if (!profesor) {
+        if (updatedRows === 0) {
             return res.status(404).json({
                 message: 'Profesor no encontrado'
             });
         }
 
-        let hashedPassword = null;
-
-        if (password) {
-            hashedPassword = await bcrypt.hash(password, 10);
-        }
-
-        // Actualizar los datos del profesor
-        const updatedProfesor = await profesor.update({
-            tipo_id,
-            prim_nom,
-            seg_nom,
-            prim_apell,
-            seg_apell,
-            username,
-            password: hashedPassword || profesor.password, // Mantener la contraseña existente si no se actualiza
-            genero,
-            celular,
-            edad,
-            direccion,
-            correo,
-            id_cargo
-        });
-
         res.status(200).json({
-            message: 'Profesor actualizado exitosamente',
-            data: updatedProfesor
+            message: 'Profesor actualizado exitosamente'
         });
 
     } catch (error) {
-        console.log('Error al actualizar el profesor:', error);
+        console.error('Error al actualizar el profesor:', error);
         res.status(500).json({
             message: 'Error en el servidor',
             error: error.message
