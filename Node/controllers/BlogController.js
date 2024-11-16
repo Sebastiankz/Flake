@@ -45,7 +45,7 @@ export const createRegister = async (req, res) => {
         res.status(201).json(register);  // 201 para recurso creado
     } catch (error) {
         res.status(500).json({
-            message: error.message
+            message: error.message            
         });
     }
 }
