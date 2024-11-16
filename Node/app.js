@@ -1,11 +1,13 @@
 import express from 'express';
 import cors from 'cors';
 import db from './database/db.js';
-import userRoutes from './routes/routes.js';
+import profesorRoutes from './routes/ProfesorRoutes.js'; 
 const app = express();
 app.use(cors());
 app.use(express.json());
-app.use('/users', userRoutes);
+
+
+app.use('/profesores', profesorRoutes);  
 
 try {
     db.authenticate();
@@ -13,7 +15,6 @@ try {
 
     await db.sync();
     console.log('All models were synchronized successfully.');
-    
 } catch (error) {
     console.error('Unable to connect to the database:', error);
 }

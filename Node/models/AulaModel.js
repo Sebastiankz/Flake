@@ -1,6 +1,5 @@
 import { DataTypes } from 'sequelize';
 import db from '../database/db.js';
-import  { ProfesorModel }  from './UserModelTemp.js';
 import InstitucionModel from './InstitucionModel.js';
 
 const AulaModel = db.define('aulas', {
@@ -50,7 +49,6 @@ const AulaModel = db.define('aulas', {
     timestamps: false   // Desactivar los timestamps por defecto
 });
 
-AulaModel.belongsTo(ProfesorModel, { foreignKey: 'id_profesor' });
 AulaModel.belongsTo(InstitucionModel, { foreignKey: 'cod_DANE' });
 
 export default AulaModel;
