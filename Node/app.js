@@ -2,12 +2,14 @@ import express from 'express';
 import cors from 'cors';
 import db from './database/db.js';
 import profesorRoutes from './routes/ProfesorRoutes.js'; 
+import alumnoRoutes from './routes/AlumnoRoutes.js';
 const app = express();
 app.use(cors());
 app.use(express.json());
 
 
 app.use('/profesores', profesorRoutes);  
+app.use('/alumnos', alumnoRoutes);
 
 try {
     db.authenticate();

@@ -2,7 +2,7 @@ import { DataTypes } from 'sequelize';
 import db from '../database/db.js';
 import InstitucionModel from './InstitucionModel.js';
 
-const AulaModel = db.define('aulas', {
+const AulaModel = db.define('Aulas', {
     id_aula: {
         type: DataTypes.STRING(20),
         primaryKey: true,

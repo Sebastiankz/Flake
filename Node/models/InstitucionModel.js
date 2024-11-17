@@ -7,24 +7,24 @@ const InstitucionModel = db.define('instituciones', {
         primaryKey: true,
         allowNull: false
     },
-    nombre: {
+    numero: {  // Se agregó este campo
         type: DataTypes.STRING(100),
+        allowNull: false
+    },
+    localidad: {  // Se agregó este campo
+        type: DataTypes.STRING(50),
+        allowNull: false
+    },
+    nombre: {
+        type: DataTypes.STRING(50),
         allowNull: false
     },
     direccion: {
         type: DataTypes.STRING(100),
         allowNull: false
     },
-    telefono: {
-        type: DataTypes.STRING(20),
-        allowNull: false
-    },
-    correo: {
-        type: DataTypes.STRING(100),
-        allowNull: false
-    },
-    rector: {
-        type: DataTypes.STRING(100),
+    barrio: {  // Se agregó este campo
+        type: DataTypes.STRING(50),
         allowNull: false
     }
 }, {

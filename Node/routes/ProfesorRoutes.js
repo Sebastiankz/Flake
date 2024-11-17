@@ -5,7 +5,7 @@ import {
     createProfesor,
     updateProfesor,
     deleteProfesor
-} from '../controllers/ProfesorController.js';  // Ajusta el nombre de archivo si es necesario
+} from '../controllers/ProfesorCRUD.js';  // Ajusta el nombre de archivo si es necesario
 
 const router = express.Router();
 

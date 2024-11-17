@@ -164,7 +164,7 @@ const AlumnoModel = db.define('Alumnos', {
         type: DataTypes.STRING(50),
         allowNull: false
     },
-    genero:{
+    genero: {
         type: DataTypes.CHAR(1),
         allowNull: false
     },
@@ -172,21 +172,9 @@ const AlumnoModel = db.define('Alumnos', {
         type: DataTypes.DATE,
         allowNull: false
     },
-    estrato:{
+    estrato: {
         type: DataTypes.INTEGER,
         allowNull: false
-    },
-    username: {
-        type: DataTypes.STRING(50),
-        unique: true,
-        allowNull: false
-    },
-    password: {
-        type: DataTypes.STRING(20),
-        allowNull: false
-    },
-    genero: {
-        type: DataTypes.CHAR(1)
     },
     celular: {
         type: DataTypes.INTEGER,
@@ -205,10 +193,10 @@ const AlumnoModel = db.define('Alumnos', {
         allowNull: false
     },
     id_aula: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER,  // Cambiado de VARCHAR a INTEGER
         references: {
-            model: 'Aulas', // Nombre de la tabla referenciada
-            key: 'id_curso'
+            model: 'Aulas',  // Nombre de la tabla referenciada
+            key: 'id_aula'  // Asegúrate de que 'id_aula' existe en la tabla Aulas
         },
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE',
@@ -216,19 +204,19 @@ const AlumnoModel = db.define('Alumnos', {
     cod_DANE: {
         type: DataTypes.STRING(50),
         references: {
-            model: 'Instituciones', // Nombre de la tabla referenciada
-            key: 'cod_DANE'
+            model: 'Instituciones',  // Nombre de la tabla referenciada
+            key: 'cod_DANE'  // Asegúrate de que 'cod_DANE' existe en la tabla Instituciones
         },
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE',
     }
-
 }, {
-    tableName: 'Alumnos', // Nombre de la tabla en la base de datos
-    timestamps: false     // Desactivar los timestamps por defecto
+    tableName: 'Alumnos',  // Nombre de la tabla en la base de datos
+    timestamps: false  // Desactivar los timestamps por defecto
 });
 
-AlumnoModel.belongsTo(AulaModel, { foreignKey: 'id_curso' });
+// Relación de claves foráneas
+AlumnoModel.belongsTo(AulaModel, { foreignKey: 'id_aula' });
 AlumnoModel.belongsTo(InstitucionModel, { foreignKey: 'cod_DANE' });
 
 export { AdministradorModel, ProfesorModel, AlumnoModel };

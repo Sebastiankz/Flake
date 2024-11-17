@@ -1,0 +1,1 @@
+import horarioModel from '../models/HorarioModel.js';
