@@ -1,17 +1,17 @@
-import { DataTypes, ENUM } from 'sequelize';
+import { DataTypes } from 'sequelize';
 import db from '../database/db.js';
 
-const AñoLectivoModel = db.define('año_lectivo', {
-    id_año: {
+const AñoLectivoModel = db.define('AñoLectivo', { // Cambiado a coincidencia exacta con la base de datos
+    id_lectivo: {
         type: DataTypes.INTEGER,
         primaryKey: true,
         allowNull: false
     },
-    fecha_inicio: {
+    fecha_inicio_week: {
         type: DataTypes.DATE,
         allowNull: false
     },
-    fecha_fin: {
+    fecha_fin_week: {
         type: DataTypes.DATE,
         allowNull: false
     },
@@ -24,13 +24,12 @@ const AñoLectivoModel = db.define('año_lectivo', {
         allowNull: false
     },
     bloque_lectivo: {
-        type: ENUM('1', '2', '3', '4'),
+        type: DataTypes.ENUM('1', '2', '3', '4'),
         allowNull: false
     }
-    
 }, {
-    tableName: 'AñoLectivo', // Nombre de la tabla en la base de datos
-    timestamps: false        // Desactivar los timestamps por defecto
+    tableName: 'año_lectivo', // Debe coincidir con la base de datos
+    timestamps: false
 });
 
 export default AñoLectivoModel;

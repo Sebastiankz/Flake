@@ -1,5 +1,6 @@
 import express from 'express';
-import { getOneAlumno,
+import { 
+    getOneAlumno,
     getAllAlumnos,
     createAlumno,
     updateAlumno,

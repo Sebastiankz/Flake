@@ -15,7 +15,6 @@ export const getAllAlumnos = async (req, res) => {
     }
 }
 
-
 export const getOneAlumno = async (req, res) => {
     try {
         const { id_alumno } = req.params;
@@ -56,12 +55,6 @@ export const updateAlumno = async (req, res) => {
             });
         }
 
-        // Si la contraseña está siendo actualizada, cifrarla
-        if (req.body.password) {
-            req.body.password = await bcrypt.hash(req.body.password, 10);
-        }
-
-        // Actualizar el alumno
         const updatedAlumno = await alumno.update(req.body);
 
         res.status(200).json({
@@ -127,7 +120,6 @@ export const createAlumno = async (req, res) => {
             cod_DANE
         } = req.body;
 
-        // Validar que los campos obligatorios estén presentes
         if (!tipo_id || !prim_nom || !prim_apell || !seg_apell || !genero || !fecha_nacimiento || !id_aula || !cod_DANE) {
             return res.status(400).json({
                 message: 'Todos los campos obligatorios deben ser proporcionados',

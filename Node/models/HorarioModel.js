@@ -4,7 +4,7 @@ import AñoLectivoModel from './AñoLectivoModel.js';
 
 const HorarioModel = db.define('Horarios', {
     id_horario: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.STRING, // Cambiado de INTEGER a STRING
         primaryKey: true,
         allowNull: false
     },
@@ -29,19 +29,20 @@ const HorarioModel = db.define('Horarios', {
         allowNull: false
     },
     id_lectivo: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.INTEGER, // Debe coincidir con la clave primaria de AñoLectivoModel
         references: {
             model: AñoLectivoModel,
-            key: 'id_año'
+            key: 'id_lectivo' // Cambiado de id_año a id_lectivo
         },
         onDelete: 'RESTRICT',
         allowNull: false
     }
 }, {
-    tableName: 'Horarios', // Nombre de la tabla en la base de datos
+    tableName: 'Horarios', // Asegúrate de que coincide con el nombre en la base de datos
     timestamps: false      // Desactivar los timestamps por defecto
 });
 
-HorarioModel.belongsTo(AñoLectivoModel, {foreignKey: 'id_lectivo'});
+// Establecer la relación
+HorarioModel.belongsTo(AñoLectivoModel, { foreignKey: 'id_lectivo' });
 
 export default HorarioModel;
