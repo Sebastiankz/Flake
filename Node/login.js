@@ -5,6 +5,7 @@ import db from './database/db.js';
 dotenv.config({path: './security.env' });
 //import verifyToken from './Middleware/verifyToken.js'; algo que estoy probando
 
+
 const router = express.Router();
 
 router.post('/login', async (req, res) => {
@@ -13,18 +14,28 @@ router.post('/login', async (req, res) => {
     try {
         let query;
 
-        // Determinar la consulta según el rol
-        if (role === 'admin') {
-            query = `SELECT * FROM Administradores WHERE correo = :username AND password = :password`;
-        } else if (role === 'instructor') {
-            query = `SELECT * FROM Profesores WHERE correo = :username AND password = :password`;
+        // Determinar la tabla según el rol
+        if (role === 'Administrador') {
+            query = `
+                SELECT a.id_administrador AS id, a.username, c.nombre_cargo 
+                FROM Administradores a
+                JOIN Cargo c ON a.id_cargo = c.id_cargo
+                WHERE a.username = :username AND a.password = :password
+            `;
+        } else if (role === 'Profesor') {
+            query = `
+                SELECT p.id_profesor AS id, p.username, c.nombre_cargo 
+                FROM Profesores p
+                JOIN Cargo c ON p.id_cargo = c.id_cargo
+                WHERE p.username = :username AND p.password = :password
+            `;
         } else {
             return res.status(400).json({ message: 'Rol no válido' });
         }
 
-        // Ejecutar la consulta con Sequelize
+        // Ejecutar la consulta con sequelize
         const [rows] = await db.query(query, {
-            replacements: { username, password }, // Parámetros seguros
+            replacements: { username, password },
             type: db.QueryTypes.SELECT,
         });
 
@@ -36,7 +47,7 @@ router.post('/login', async (req, res) => {
 
         // Generar token JWT
         const token = jwt.sign(
-            { id: user.id_administrador || user.id_profesor, role },
+            { id: user.id, role: user.nombre_cargo },
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRES }
         );
@@ -49,4 +60,3 @@ router.post('/login', async (req, res) => {
 });
 
 export default router;
-
