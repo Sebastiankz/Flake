@@ -10,7 +10,7 @@ app.use(cors());
 app.use(express.json());
 
 // Montar rutas
-app.use('/users', userRoutes); // Rutas de usuarios (ya existentes)
+//app.use('/users', userRoutes); // Rutas de usuarios (falta ver como configurar esto)
 app.use('/login', loginRoutes); // Rutas de login
 
 // Probar conexión a la base de datos
