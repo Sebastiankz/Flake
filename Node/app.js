@@ -4,6 +4,7 @@ import db from './database/db.js';
 import profesorRoutes from './routes/ProfesorRoutes.js'; 
 import alumnoRoutes from './routes/AlumnoRoutes.js';
 import horarioRoutes from './routes/HorarioRoutes.js';
+import aulaRoutes from './routes/AulaRoutes.js';
 const app = express();
 app.use(cors());
 app.use(express.json());
@@ -12,6 +13,7 @@ app.use(express.json());
 app.use('/profesores', profesorRoutes);  
 app.use('/alumnos', alumnoRoutes);
 app.use('/horarios', horarioRoutes);
+app.use('/aulas', aulaRoutes);
 
 try {
     db.authenticate();

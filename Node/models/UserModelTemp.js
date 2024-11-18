@@ -215,7 +215,6 @@ const AlumnoModel = db.define('Alumnos', {
     timestamps: false  // Desactivar los timestamps por defecto
 });
 
-// Relación de claves foráneas
 AlumnoModel.belongsTo(AulaModel, { foreignKey: 'id_aula' });
 AlumnoModel.belongsTo(InstitucionModel, { foreignKey: 'cod_DANE' });
 

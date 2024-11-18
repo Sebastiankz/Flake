@@ -28,7 +28,7 @@ const AulaModel = db.define('Aulas', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Profesores', // Nombre de la tabla referenciada
+            model: 'Profesores', 
             key: 'id_profesor'
         },
         onDelete: 'RESTRICT',
@@ -38,15 +38,15 @@ const AulaModel = db.define('Aulas', {
         type: DataTypes.STRING(50),
         allowNull: false,
         references: {
-            model: 'Instituciones', // Nombre de la tabla referenciada
+            model: 'Instituciones', 
             key: 'cod_DANE'
         },
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE'
     }
 }, {
-    tableName: 'Aulas', // Nombre de la tabla en la base de datos
-    timestamps: false   // Desactivar los timestamps por defecto
+    tableName: 'Aulas', 
+    timestamps: false   
 });
 
 AulaModel.belongsTo(InstitucionModel, { foreignKey: 'cod_DANE' });

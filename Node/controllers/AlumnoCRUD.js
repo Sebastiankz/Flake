@@ -43,8 +43,8 @@ export const getOneAlumno = async (req, res) => {
 export const updateAlumno = async (req, res) => {
     try {
         const { id_alumno } = req.params;
+        const { cod_DANE } = req.body;
 
-        // Verificar si el alumno existe
         const alumno = await AlumnoModel.findOne({
             where: { id_alumno }
         });
@@ -53,6 +53,11 @@ export const updateAlumno = async (req, res) => {
             return res.status(404).json({
                 message: 'Alumno no encontrado'
             });
+        }
+
+        const institucion = await InstitucionModel.findByPk(cod_DANE);
+        if (!institucion) {
+            return res.status(404).json({ message: 'Institucion no encontrada' });
         }
 
         const updatedAlumno = await alumno.update(req.body);
