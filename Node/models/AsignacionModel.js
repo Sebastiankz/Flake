@@ -38,4 +38,7 @@ HorarioModel.belongsToMany(AulaModel, {
     otherKey: 'id_aula'
 });
 
+AsignacionModel.belongsTo(HorarioModel, { foreignKey: 'id_horario' });
+AsignacionModel.belongsTo(AulaModel, { foreignKey: 'id_aula' });
+
 export default AsignacionModel;
