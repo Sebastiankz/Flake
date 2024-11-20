@@ -6,7 +6,7 @@ export const getStudentsByAula = async (req, res) => {
     try {
         const estudiantes = await AlumnoModel.findAll({
             where: { id_aula }, // Filtra por aula
-            attributes: ['id_alumno', 'prim_nom', 'prim_apell', 'edad', 'genero'], // Campos deseados
+            attributes: ['id_alumno', 'prim_nom', 'prim_apell', 'edad', 'genero'] // Campos deseados
         });
 
         if (estudiantes.length === 0) {
