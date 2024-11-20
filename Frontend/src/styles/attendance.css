@@ -1,0 +1,101 @@
+.attendance-page {
+    padding: 20px;
+}
+
+.typewriter-text {
+    font-size: 28px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.filters-container {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.filters-container select,
+input[type="date"] {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+}
+
+.btn-search {
+    background-color: #4b0e8a;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.btn-action {
+    background-color: #4b0e8a;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.save-btn {
+    margin-left: 15px;
+}
+
+.students-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.students-table th,
+.students-table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.students-table th {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.students-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+
+.btn-save {
+    background-color: #4b0e8a;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    margin-left: auto;
+}
+
+.actions-container {
+    display: flex;
+    justify-content: space-between; /* Separa los botones de los extremos */
+    margin-bottom: 20px;
+    align-items: center;
+}
+
+.left-buttons {
+    display: flex;
+    gap: 10px; /* Espacio entre los botones de la izquierda */
+}
+
+.right-button {
+    margin-left: auto; /* Empuja el botón "Enviar Cambios" hacia la derecha */
+}
+
+

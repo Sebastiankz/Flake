@@ -1,0 +1,31 @@
+.app {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    font-family: 'Poppins', sans-serif;
+}
+
+.main-container {
+    display: flex;
+    flex: 1;
+}
+
+.content-container {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+}
+
+.app-footer {
+    background-color: #ffffff;
+    color: #333;
+    text-align: center;
+    padding: 5px 10px;
+    font-size: 12px;
+    width: 100%;
+    margin-top: 20px; /* Añadir un margen superior para separarlo del contenido */
+    font-family: 'Poppins', sans-serif;
+    position: relative; /* Cambiar de fixed a relative */
+    box-shadow: none; /* Eliminar la sombra */
+}
+

@@ -1,0 +1,13 @@
+.app-footer {
+    background-color: #ffffff;
+    color: #333;
+    text-align: center;
+    padding: 2.5px 5px;
+    font-size: 12px;
+    width: 100%;
+    margin-top: 20px; /* Añadir un margen superior para separarlo del contenido */
+    font-family: 'Poppins', sans-serif;
+    position: relative; /* Cambiar de fixed a relative */
+    box-shadow: none; /* Eliminar la sombra */
+}
+

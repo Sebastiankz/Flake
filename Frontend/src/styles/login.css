@@ -1,0 +1,264 @@
+/* Estilo del contenedor del login */
+.login-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-card {
+    background: #ffffff;
+    padding: 60px 50px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 100%;
+    max-width: 450px;
+}
+
+/* Estilo del ícono */
+.logo-icon {
+    font-size: 60px;
+    color: #5a189a;
+    margin-bottom: 25px;
+}
+
+/* Estilos para el texto */
+h2 {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+p {
+    color: #6b7280;
+    margin-bottom: 30px;
+}
+
+/* Campos de entrada */
+.form-control {
+    border: 2px solid #ced4da;
+    border-radius: 25px;
+    padding: 15px 20px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: rgba(90, 24, 154, 0.5) !important;
+    box-shadow: 0 0 5px rgba(90, 24, 154, 0.5) !important;
+}
+
+/* Botón morado */
+.btn-morado {
+    background-color: #5a189a !important;
+    color: #ffffff !important;
+    border: none;
+    border-radius: 25px;
+    padding: 15px;
+    font-weight: 600;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-morado:hover {
+    background-color: #4b0e8a;
+}
+
+/* Tamaño del botón */
+.btn-large {
+    width: 100%;
+    padding: 15px;
+}
+
+
+/* Efecto de hover */
+.radio-label:hover {
+    transform: scale(1.1);
+    color: #5a189a;
+}
+
+.typewriter-text {
+    font-size: 16px;
+    color: #6b7280;
+    margin-bottom: 30px;
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+    max-width: 350px;
+    min-width: 350px;
+    text-align: center;
+}
+
+
+
+@keyframes blink {
+    from {
+        border-color: #5a189a;
+    }
+    to {
+        border-color: transparent;
+    }
+}
+
+/* Animación de aparición */
+.login-container {
+    animation: fadeIn 1s ease-in-out;
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Sombra del contenedor */
+.login-card {
+    background: #ffffff;
+    padding: 60px 50px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+}
+
+
+.login-background {
+    background: url('C:\\Users\\sofmo\\Desktop\\frontend-pf\\public\\assets\\background2.png') no-repeat center center fixed;
+    background-size: cover;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Estilo del contenedor del login */
+.login-container {
+    animation: fadeIn 1s ease-in-out;
+}
+
+.login-card {
+    background: #ffffff;
+    padding: 60px 50px;
+    border-radius: 20px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 450px;
+}
+
+/* Estilo del ícono superior */
+.logo-icon {
+    font-size: 60px;
+    color: #5a189a;
+    margin-bottom: 25px;
+}
+
+/* Estilos para el texto */
+h2 {
+    font-weight: 600;
+    margin-bottom: 15px;
+}
+
+
+/* Campos de entrada */
+.form-control {
+    border: 2px solid #ced4da;
+    border-radius: 25px;
+    padding: 15px 20px;
+    font-size: 16px;
+    margin-bottom: 20px;
+    padding-left: 40px;
+    transition: all 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #5a189a;
+    box-shadow: 0 0 5px rgba(90, 24, 154, 0.5);
+}
+
+/* Botón de inicio de sesión */
+.btn-morado {
+    background: linear-gradient(90deg, #5a189a, #7b2cbf);
+    color: #ffffff;
+    border: none;
+    border-radius: 25px;
+    padding: 15px;
+    font-weight: 600;
+    font-size: 18px;
+    cursor: pointer;
+    width: 100%;
+}
+
+.btn-morado:hover {
+    background: linear-gradient(90deg, #7b2cbf, #5a189a);
+}
+
+.btn-morado:active {
+    transform: scale(0.98);
+}
+
+/* Estilo de los radio buttons */
+.role-selection {
+    display: flex;
+    justify-content: space-around;
+    margin: 25px 0;
+    accent-color: #5a189a;
+}
+
+.radio-label {
+    font-size: 16px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.radio-label:hover {
+    transform: scale(1.1);
+    color: #5a189a;
+}
+
+/* Radio button personalizado */
+.role-selection input[type="radio"] {
+    accent-color: #5a189a;
+}
+
+/* Ícono de ayuda en la esquina superior derecha */
+.help-icon {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    font-size: 24px;
+    color: #5a189a;;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+
+.help-icon:hover {
+    color: #5a189a;
+}
+
+/* Estilo del footer con logos debajo del botón */
+.footer-logos {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.footer-logo {
+    height: 40px;
+    width: auto;
+    transition: transform 0.2s ease;
+}
+
+.footer-logo:hover {
+    transform: scale(1.1);
+}
+
+
+
+
+
