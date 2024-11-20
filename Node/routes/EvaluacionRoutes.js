@@ -1,4 +1,4 @@
-import { registrarActualizarAsistencia } from "../controllers/RegistrarAsistencia";
+import { registrarActualizarAsistencia } from "../controllers/RegistrarAsistencia.js";
 import express from "express";
 
 const router = express.Router();

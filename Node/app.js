@@ -9,7 +9,7 @@ import aulaRoutes from './routes/AulaRoutes.js';
 import institucionRoutes from './routes/InstitucionRoutes.js';
 import HorarioProfesorRoutes from './routes/HorarioProfesorRoutes.js';
 import asignacionRoutes from './routes/AsignacionRoutes.js';
-import evaluacionRoutes from './routes/EvaluacionRoutes.js';
+import evaluacionRoutes from './routes/evaluacionRoutes.js';
 
 const app = express();
 
@@ -26,7 +26,7 @@ app.use('/horarioProfesor', HorarioProfesorRoutes); // Rutas de horarios de prof
 app.use('/asignaciones', asignacionRoutes); // Rutas de asignaciones
 app.use('/evaluaciones', evaluacionRoutes); // Rutas de evaluaciones
 
-
+//no se ha probado evaluciones ni asistencias
 
 try {
     db.authenticate();
