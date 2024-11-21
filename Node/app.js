@@ -9,7 +9,7 @@ import aulaRoutes from './routes/AulaRoutes.js';
 import institucionRoutes from './routes/InstitucionRoutes.js';
 import HorarioProfesorRoutes from './routes/HorarioProfesorRoutes.js';
 import asignacionRoutes from './routes/AsignacionRoutes.js';
-import evaluacionRoutes from './routes/evaluacionRoutes.js';
+import RegistrarAsistencia from './routes/RegistroAsistenciaRoutes.js';
 
 const app = express();
 
@@ -24,10 +24,7 @@ app.use('/instituciones', institucionRoutes); //Rutas de instituciones
 app.use('/login', loginRoutes); // Rutas de login
 app.use('/horarioProfesor', HorarioProfesorRoutes); // Rutas de horarios de profesores
 app.use('/asignaciones', asignacionRoutes); // Rutas de asignaciones
-app.use('/evaluaciones', evaluacionRoutes); // Rutas de evaluaciones
-
-//no se ha probado evaluciones ni asistencias
-
+app.use('/asistencia', RegistrarAsistencia); // Rutas necesarias para el registro de asistencia
 try {
     db.authenticate();
     console.log('Connection has been established successfully (DB).');
