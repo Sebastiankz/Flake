@@ -30,7 +30,7 @@ export const getOneInstitucion = async (req, res) => {
 
 export const createInstitucion = async (req, res) => {
     try {
-        const { cod_DANE, numero, localidad, nombre, direccion, barrio } = req.body;
+        const { cod_DANE, numero, localidad, nombre, nombre_rector, direccion, barrio } = req.body;
 
         const institucionExistente = await InstitucionModel.findByPk(cod_DANE);
         if (institucionExistente) {
@@ -38,7 +38,7 @@ export const createInstitucion = async (req, res) => {
         }
 
         const nuevaInstitucion = await InstitucionModel.create({ 
-            cod_DANE, numero, localidad, nombre, direccion, barrio 
+            cod_DANE, numero, localidad, nombre, nombre_rector, direccion, barrio 
         });
 
         res.status(201).json(nuevaInstitucion);
@@ -51,7 +51,7 @@ export const createInstitucion = async (req, res) => {
 export const updateInstitucion = async (req, res) => {
     try {
         const { cod_DANE } = req.params;
-        const { numero, localidad, nombre, direccion, barrio } = req.body;
+        const { numero, localidad, nombre, nombre_rector, direccion, barrio } = req.body;
 
         const institucion = await InstitucionModel.findByPk(cod_DANE);
 
@@ -59,7 +59,7 @@ export const updateInstitucion = async (req, res) => {
             return res.status(404).json({ message: 'Institución no encontrada' });
         }
 
-        await institucion.update({ numero, localidad, nombre, direccion, barrio });
+        await institucion.update({ numero, localidad, nombre, nombre_rector, direccion, barrio });
         res.status(200).json({ message: 'Institución actualizada correctamente', institucion });
     } catch (error) {
         console.error(error);

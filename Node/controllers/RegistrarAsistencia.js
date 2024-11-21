@@ -6,12 +6,12 @@ pasos para registrar asistencia:
 3. Obtener los estudiantes de un aula y registrar la asistencia.
 */
 
-import InstitucionModel from "../models/InstitucionModel";
-import AulaModel from "../models/AulaModel";
-import HorarioModel from "../models/HorarioModel";
-import AsignacionModel from "../models/AsignacionModel";
-import { AlumnoModel } from "../models/UserModelTemp";
-import AsistenciaModel from "../models/AsistenciaModel"
+import InstitucionModel from "../models/InstitucionModel.js";
+import AulaModel from "../models/AulaModel.js";
+import HorarioModel from "../models/HorarioModel.js";
+import AsignacionModel from "../models/AsignacionModel.js";
+import { AlumnoModel } from "../models/UserModelTemp.js";
+import AsistenciaModel from "../models/AsistenciaModel.js"
 
 //Obteniendo instituciones
 export const institucionesProfesor = async (req, res) => {

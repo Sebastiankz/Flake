@@ -19,6 +19,10 @@ const InstitucionModel = db.define('instituciones', {
         type: DataTypes.STRING(50),
         allowNull: false
     },
+    nombre_rector: {
+        type: DataTypes.STRING(50),
+        allowNull: false
+    },
     direccion: {
         type: DataTypes.STRING(100),
         allowNull: false

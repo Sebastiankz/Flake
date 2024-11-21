@@ -2,7 +2,7 @@ import {
     institucionesProfesor,
     obtenerAulasProfesor,
     obtenerHorariosAula,
-    obtenerEstudiantesPorHorario } from "../controllers/RegistrarAsistencia";
+    obtenerEstudiantesPorHorario } from "../controllers/RegistrarAsistencia.js";
 
 import express from "express";
 
