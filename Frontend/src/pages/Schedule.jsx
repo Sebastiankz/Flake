@@ -9,15 +9,15 @@ const localizer = momentLocalizer(moment);
 
 const Schedule = () => {
     const [events, setEvents] = useState([]);
-    const [classrooms, setClassrooms] = useState([]); // Inicialización correcta
+    const [classrooms, setClassrooms] = useState([]);
     const [selectedClassroom, setSelectedClassroom] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
     const fetchClassrooms = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/options');
+            const response = await axios.get('http://localhost:5000/classrooms');
             if (Array.isArray(response.data)) {
-                setClassrooms(response.data); // Verifica que sea un arreglo antes de asignar
+                setClassrooms(response.data);
             } else {
                 console.error('Respuesta inesperada para las aulas:', response.data);
             }
@@ -35,20 +35,26 @@ const Schedule = () => {
         setIsLoading(true);
         try {
             const response = await axios.get(`http://localhost:5000/schedule?classroom=${selectedClassroom}`);
-            const formattedEvents = response.data.map((event) => ({
-                title: `${event.tutor} - ${event.subject}`,
-                start: new Date(event.start_time),
-                end: new Date(event.end_time),
-            }));
-            setEvents(formattedEvents);
+            if (response.data && Array.isArray(response.data)) {
+                const formattedEvents = response.data.map((event) => ({
+                    title: `${event.tutor} - ${event.subject}`,
+                    start: new Date(event.start_time),
+                    end: new Date(event.end_time),
+                }));
+                setEvents(formattedEvents);
+            } else {
+                console.error('Respuesta inesperada al obtener el horario:', response.data);
+                setEvents([]);
+            }
         } catch (error) {
             console.error('Error al obtener el horario:', error);
+            setEvents([]);
         }
         setIsLoading(false);
     };
 
     useEffect(() => {
-        fetchClassrooms(); // Cargar las aulas al inicio
+        fetchClassrooms();
     }, []);
 
     return (
@@ -77,7 +83,7 @@ const Schedule = () => {
                     events={events}
                     startAccessor="start"
                     endAccessor="end"
-                    style={{ height: 500, backgroundColor: '#f9f9f9', borderRadius: '8px', padding: '10px' }}
+                    style={{ height: 500, padding: '10px' }}
                     messages={{
                         next: 'Sig.',
                         previous: 'Ant.',

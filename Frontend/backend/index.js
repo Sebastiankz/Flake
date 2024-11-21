@@ -205,6 +205,52 @@ app.post('/update-grades', (req, res) => {
     });
 });
 
+// Ruta para obtener las aulas disponibles
+app.get('/classrooms', (req, res) => {
+    const query = 'SELECT DISTINCT classroom FROM schedules'; // Cambiar a la tabla `schedules`
+
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error al obtener aulas:', err);
+            return res.status(500).json({ error: 'Error al obtener aulas' });
+        }
+        // Devuelve solo las aulas como un array simple
+        const classrooms = results.map(row => row.classroom);
+        res.json(classrooms);
+    });
+});
+
+// Ruta para obtener horarios filtrados por aula
+app.get('/schedule', (req, res) => {
+    const { classroom } = req.query;
+
+    if (!classroom) {
+        return res.status(400).json({ error: 'El aula es requerida.' });
+    }
+
+    const query = `
+        SELECT tutor, subject, start_time, end_time 
+        FROM schedules 
+        WHERE classroom = ?
+    `;
+
+    db.query(query, [classroom], (err, results) => {
+        if (err) {
+            console.error('Error al obtener el horario:', err);
+            res.status(500).json({ error: 'Error al obtener el horario' });
+        } else {
+            const formattedResults = results.map((row) => ({
+                tutor: row.tutor,
+                subject: row.subject,
+                start_time: row.start_time,
+                end_time: row.end_time,
+            }));
+            res.json(formattedResults); // Enviar resultados formateados
+        }
+    });
+});
+
+
 // ----------------------------- INICIAR SERVIDOR -----------------------------
 const PORT = 5000;
 app.listen(PORT, () => {
