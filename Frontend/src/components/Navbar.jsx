@@ -5,7 +5,10 @@ import '../styles/navbar.css';
 const Navbar = () => {
     const fullName = localStorage.getItem('full_name');
     const username = localStorage.getItem('username');
-    const userRole = localStorage.getItem('role');
+    const userRole = localStorage.getItem('role'); // 1 para Admin, 2 para Profesor
+
+    // Determinar el rol del usuario basado en el valor de `role`
+    const roleName = userRole === '1' ? 'Administrador' : userRole === '2' ? 'Profesor' : 'Usuario';
 
     return (
         <header className="navbar">
@@ -16,9 +19,7 @@ const Navbar = () => {
             <div className="navbar-right">
                 <div className="user-info">
                     <span className="user-name">{fullName || username || 'Usuario'}</span>
-                    <span className="user-role">
-                        {userRole === 'admin' ? 'Administrador' : 'Instructor'}
-                    </span>
+                    <span className="user-role">{roleName}</span>
                 </div>
             </div>
         </header>

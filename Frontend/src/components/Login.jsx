@@ -7,7 +7,6 @@ import '../styles/login.css';
 const Login = ({ onLogin }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [role, setRole] = useState('instructor');
     const [typedText, setTypedText] = useState('');
     const navigate = useNavigate();
     const message = "Nos alegra verte de nuevo 👋";
@@ -30,19 +29,18 @@ const Login = ({ onLogin }) => {
     // Manejo del formulario de inicio de sesión
     const handleSubmit = async (e) => {
         e.preventDefault();
-    
+
         try {
             const response = await axios.post('http://localhost:5000/login', {
                 username: username.trim(),
                 password: password.trim(),
-                role,
             });
-    
+
             if (response.data.success) {
-                const { username, full_name, role } = response.data.user;
+                const { username, full_name, id_cargo } = response.data.user;
                 localStorage.setItem('username', username || 'Desconocido');
                 localStorage.setItem('full_name', full_name || 'Desconocido');
-                localStorage.setItem('role', role || '');
+                localStorage.setItem('role', id_cargo || '');
                 onLogin(); // Cambia el estado de autenticación en App.jsx
                 navigate('/inicio', { replace: true }); // Redirige a la página de inicio
             } else {
@@ -82,28 +80,6 @@ const Login = ({ onLogin }) => {
                                 onChange={(e) => setPassword(e.target.value)}
                                 required
                             />
-                        </div>
-                        <div className="role-selection">
-                            <label className="radio-label">
-                                <input
-                                    type="radio"
-                                    name="role"
-                                    value="instructor"
-                                    checked={role === 'instructor'}
-                                    onChange={() => setRole('instructor')}
-                                />
-                                Instructor
-                            </label>
-                            <label className="radio-label">
-                                <input
-                                    type="radio"
-                                    name="role"
-                                    value="admin"
-                                    checked={role === 'admin'}
-                                    onChange={() => setRole('admin')}
-                                />
-                                Administrador
-                            </label>
                         </div>
                         <button type="submit" className="btn btn-morado btn-large">
                             Iniciar sesión

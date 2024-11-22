@@ -3,71 +3,95 @@ import axios from 'axios';
 import '../styles/grades.css';
 
 const Grades = () => {
-    const [classrooms, setClassrooms] = useState([]);
-    const [grades, setGrades] = useState([]);
     const [institutions, setInstitutions] = useState([]);
+    const [classrooms, setClassrooms] = useState([]);
     const [schedules, setSchedules] = useState([]);
-    const [selectedClassroom, setSelectedClassroom] = useState('');
-    const [selectedGrade, setSelectedGrade] = useState('');
-    const [selectedInstitution, setSelectedInstitution] = useState('');
-    const [selectedSchedule, setSelectedSchedule] = useState('');
-    const [selectedDate, setSelectedDate] = useState('');
     const [students, setStudents] = useState([]);
-    const [typedText, setTypedText] = useState(''); // Solución del error
-
+    const [selectedInstitution, setSelectedInstitution] = useState('');
+    const [selectedClassroom, setSelectedClassroom] = useState('');
+    const [selectedSchedule, setSelectedSchedule] = useState('');
+    const [typedText, setTypedText] = useState('');
     const message = "Toma de Notas";
 
+    // Efecto de máquina de escribir
     useEffect(() => {
         let index = 0;
         const typingInterval = setInterval(() => {
             if (index < message.length) {
-                setTypedText(message.substring(0, index + 1));
+                setTypedText((prev) => prev + message.charAt(index));
                 index++;
             } else {
                 clearInterval(typingInterval);
             }
         }, 100);
-
         return () => clearInterval(typingInterval);
-    }, []);
+    }, [message]);
 
-    const fetchOptions = async () => {
+    // Obtener instituciones del profesor
+    const fetchInstitutions = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/options', { withCredentials: true });
-            setClassrooms(response.data.classrooms);
-            setGrades(response.data.grades);
-            setInstitutions(response.data.institutions);
-            setSchedules(response.data.schedules);
+            const response = await axios.get('http://localhost:5000/instituciones');
+            setInstitutions(response.data);
         } catch (error) {
-            console.error('Error al obtener opciones:', error);
+            console.error('Error al obtener instituciones:', error);
         }
     };
 
-    const fetchStudents = async () => {
+    // Obtener aulas asociadas a la institución seleccionada
+    const fetchClassrooms = async () => {
+        if (!selectedInstitution) return;
         try {
-            const response = await axios.get('http://localhost:5000/students', {
-                params: { classroom: selectedClassroom, grade: selectedGrade, institution: selectedInstitution, schedule: selectedSchedule, date: selectedDate },
-                withCredentials: true,
-            });
+            const response = await axios.get(`http://localhost:5000/aulas/${selectedInstitution}`);
+            setClassrooms(response.data);
+        } catch (error) {
+            console.error('Error al obtener aulas:', error);
+        }
+    };
+
+    // Obtener horarios de un aula específica
+    const fetchSchedules = async () => {
+        if (!selectedClassroom) return;
+        try {
+            const response = await axios.get(`http://localhost:5000/horarios/${selectedClassroom}`);
+            setSchedules(response.data);
+        } catch (error) {
+            console.error('Error al obtener horarios:', error);
+        }
+    };
+
+    // Obtener estudiantes y sus evaluaciones para el horario seleccionado
+    const fetchStudents = async () => {
+        if (!selectedSchedule) return;
+        try {
+            const response = await axios.get(`http://localhost:5000/evaluaciones/${selectedSchedule}`);
             setStudents(response.data);
         } catch (error) {
             console.error('Error al obtener estudiantes:', error);
         }
     };
 
+    // Manejar cambios en las notas de los estudiantes
+    const handleGradeChange = (id_alumno, grade) => {
+        setStudents((prevStudents) =>
+            prevStudents.map((student) =>
+                student.id_alumno === id_alumno ? { ...student, nota: grade } : student
+            )
+        );
+    };
+
+    // Guardar o actualizar evaluaciones en el backend
     const updateGrades = async () => {
-        const updatedGrades = students.map(student => ({
-            id: student.id,
-            grade: student.grade,
+        const evaluaciones = students.map((student) => ({
+            id_alumno: student.id_alumno,
+            nota: student.nota || 0, // Asegurarse de que la nota no esté vacía
         }));
 
         try {
-            const response = await axios.post('http://localhost:5000/update-grades', {
-                grades: updatedGrades,
-                date: selectedDate,
-                schedule: selectedSchedule,
+            const response = await axios.post('http://localhost:5000/evaluaciones', {
+                id_horario: selectedSchedule,
+                evaluaciones,
             });
-            if (response.data.success) {
+            if (response.status === 201) {
                 alert('Notas guardadas exitosamente.');
             } else {
                 alert('Error al guardar las notas.');
@@ -78,81 +102,82 @@ const Grades = () => {
         }
     };
 
-    const handleGradeChange = (id, grade) => {
-        setStudents(students.map(student =>
-            student.id === id ? { ...student, grade } : student
-        ));
-    };
+    // Efectos para cargar datos dinámicamente
+    useEffect(() => {
+        fetchInstitutions();
+    }, []);
 
     useEffect(() => {
-        fetchOptions();
-    }, []);
+        fetchClassrooms();
+    }, [selectedInstitution]);
+
+    useEffect(() => {
+        fetchSchedules();
+    }, [selectedClassroom]);
 
     return (
         <div className="attendance-page">
             <h2 className="typewriter-text">{typedText}</h2>
             <div className="filters-container">
-                <select onChange={(e) => setSelectedClassroom(e.target.value)}>
-                    <option value="">Aula</option>
-                    {classrooms.map((classroom) => (
-                        <option key={classroom} value={classroom}>{classroom}</option>
-                    ))}
-                </select>
-
-                <select onChange={(e) => setSelectedGrade(e.target.value)}>
-                    <option value="">Grado</option>
-                    {grades.map((grade) => (
-                        <option key={grade} value={grade}>{grade}</option>
-                    ))}
-                </select>
-
                 <select onChange={(e) => setSelectedInstitution(e.target.value)}>
                     <option value="">Institución</option>
                     {institutions.map((institution) => (
-                        <option key={institution} value={institution}>{institution}</option>
+                        <option key={institution.cod_DANE} value={institution.cod_DANE}>
+                            {institution.nombre}
+                        </option>
+                    ))}
+                </select>
+
+                <select onChange={(e) => setSelectedClassroom(e.target.value)}>
+                    <option value="">Aula</option>
+                    {classrooms.map((classroom) => (
+                        <option key={classroom.id_aula} value={classroom.id_aula}>
+                            {`${classroom.grad_num}° - Grupo ${classroom.num_grupo} (${classroom.jornada})`}
+                        </option>
                     ))}
                 </select>
 
                 <select onChange={(e) => setSelectedSchedule(e.target.value)}>
                     <option value="">Horario</option>
                     {schedules.map((schedule) => (
-                        <option key={schedule} value={schedule}>{schedule}</option>
+                        <option key={schedule.id_horario} value={schedule.id_horario}>
+                            {`${schedule.dia_semana} ${schedule.hora_inicio} - ${schedule.hora_fin}`}
+                        </option>
                     ))}
                 </select>
 
-                <input type="date" onChange={(e) => setSelectedDate(e.target.value)} placeholder="dd/mm/aaaa" />
                 <button onClick={fetchStudents} className="btn-search">Buscar</button>
             </div>
 
             <div className="actions-container">
-                <button onClick={updateGrades} className="btn-action" style={{ float: 'right' }}>Guardar Cambios</button>
+                <button onClick={updateGrades} className="btn-action">Guardar Cambios</button>
             </div>
 
             <table className="students-table">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>ID Alumno</th>
                         <th>Nombre Completo</th>
+                        <th>Correo</th>
                         <th>Celular</th>
-                        <th>Correo Electrónico</th>
                         <th>Nota</th>
                     </tr>
                 </thead>
                 <tbody>
                     {students.map((student) => (
-                        <tr key={student.id}>
-                            <td>{student.id}</td>
-                            <td>{student.full_name}</td>
-                            <td>{student.phone_number}</td>
-                            <td>{student.email}</td>
+                        <tr key={student.id_alumno}>
+                            <td>{student.id_alumno}</td>
+                            <td>{`${student.prim_nom} ${student.seg_nom} ${student.prim_apell} ${student.seg_apell}`}</td>
+                            <td>{student.correo}</td>
+                            <td>{student.celular}</td>
                             <td>
                                 <input
                                     type="number"
                                     min="0"
                                     max="5"
                                     step="0.1"
-                                    value={student.grade || ''}
-                                    onChange={(e) => handleGradeChange(student.id, e.target.value)}
+                                    value={student.nota || ''}
+                                    onChange={(e) => handleGradeChange(student.id_alumno, e.target.value)}
                                     style={{ width: '60px', textAlign: 'center' }}
                                 />
                             </td>

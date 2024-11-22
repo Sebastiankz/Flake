@@ -13,9 +13,12 @@ const Schedule = () => {
     const [selectedClassroom, setSelectedClassroom] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
+    // Cargar aulas asociadas al profesor
     const fetchClassrooms = async () => {
         try {
-            const response = await axios.get('http://localhost:5000/classrooms');
+            const response = await axios.get('http://localhost:5000/profesores/classrooms', {
+                params: { id_profesor: 1 }, // ID del profesor, ajustar según autenticación
+            });
             if (Array.isArray(response.data)) {
                 setClassrooms(response.data);
             } else {
@@ -26,6 +29,7 @@ const Schedule = () => {
         }
     };
 
+    // Cargar horarios para un aula seleccionada
     const fetchSchedule = async () => {
         if (!selectedClassroom) {
             alert('Por favor selecciona un aula.');
@@ -34,12 +38,12 @@ const Schedule = () => {
 
         setIsLoading(true);
         try {
-            const response = await axios.get(`http://localhost:5000/schedule?classroom=${selectedClassroom}`);
+            const response = await axios.get(`http://localhost:5000/horarios/${selectedClassroom}`);
             if (response.data && Array.isArray(response.data)) {
                 const formattedEvents = response.data.map((event) => ({
-                    title: `${event.tutor} - ${event.subject}`,
-                    start: new Date(event.start_time),
-                    end: new Date(event.end_time),
+                    title: `${event.dia_semana}: ${event.hora_inicio} - ${event.hora_fin}`,
+                    start: new Date(event.fecha_inicio),
+                    end: new Date(event.fecha_fin),
                 }));
                 setEvents(formattedEvents);
             } else {
@@ -68,8 +72,8 @@ const Schedule = () => {
                 >
                     <option value="">Selecciona un aula</option>
                     {classrooms.map((classroom) => (
-                        <option key={classroom} value={classroom}>
-                            {classroom}
+                        <option key={classroom.id_aula} value={classroom.id_aula}>
+                            {`${classroom.grad_num}° - Aula ${classroom.id_aula}`}
                         </option>
                     ))}
                 </select>

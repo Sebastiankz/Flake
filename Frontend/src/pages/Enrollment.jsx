@@ -3,21 +3,13 @@ import axios from 'axios';
 import '../styles/enrollment.css';
 
 const Enrollment = () => {
-    const [dropdownOptions, setDropdownOptions] = useState({
-        grades: [],
-        institutions: [],
-        classrooms: [],
-        schedules: [],
-    });
+    const [institutions, setInstitutions] = useState([]);
+    const [classrooms, setClassrooms] = useState([]);
     const [students, setStudents] = useState([]);
-    const [selectedDropdowns, setSelectedDropdowns] = useState({
-        grade: '',
-        institution: '',
-        classroom: '',
-        schedule: '',
-    });
+    const [selectedInstitution, setSelectedInstitution] = useState('');
+    const [selectedClassroom, setSelectedClassroom] = useState('');
     const [typedText, setTypedText] = useState('');
-    const message = "iInscripciones";
+    const message = 'Inscripciones';
 
     // Efecto de máquina de escribir para el título
     useEffect(() => {
@@ -33,71 +25,102 @@ const Enrollment = () => {
         return () => clearInterval(typingInterval);
     }, [message]);
 
+    // Obtener instituciones al cargar el componente
     useEffect(() => {
-        const fetchOptions = async () => {
+        const fetchInstitutions = async () => {
             try {
-                const response = await axios.get('http://localhost:5000/options');
-                setDropdownOptions(response.data);
+                const response = await axios.get('http://localhost:5000/instituciones');
+                setInstitutions(response.data);
             } catch (error) {
-                console.error('Error al obtener opciones:', error);
+                console.error('Error al obtener instituciones:', error);
             }
         };
-        fetchOptions();
+        fetchInstitutions();
     }, []);
 
-    const handleDropdownChange = (e) => {
-        const { name, value } = e.target;
-        setSelectedDropdowns((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+    // Obtener aulas según la institución seleccionada
+    const fetchClassrooms = async () => {
+        if (!selectedInstitution) return;
+        try {
+            const response = await axios.get(`http://localhost:5000/aulas/${selectedInstitution}`);
+            setClassrooms(response.data);
+        } catch (error) {
+            console.error('Error al obtener aulas:', error);
+        }
     };
 
+    useEffect(() => {
+        fetchClassrooms();
+    }, [selectedInstitution]);
+
+    // Manejar cambio en los dropdowns
+    const handleDropdownChange = (e) => {
+        const { name, value } = e.target;
+        if (name === 'institution') {
+            setSelectedInstitution(value);
+        } else if (name === 'classroom') {
+            setSelectedClassroom(value);
+        }
+    };
+
+    // Manejar cambio en los inputs de estudiantes
     const handleInputChange = (index, field, value) => {
         const updatedStudents = [...students];
         updatedStudents[index][field] = value;
         setStudents(updatedStudents);
     };
 
+    // Agregar una nueva fila para un estudiante
     const addRow = () => {
-        setStudents([...students, { fullName: '', phoneNumber: '', email: '' }]);
+        setStudents([
+            ...students,
+            {
+                tipo_id: '',
+                prim_nom: '',
+                seg_nom: '',
+                prim_apell: '',
+                seg_apell: '',
+                genero: '',
+                fecha_nacimiento: '',
+                estrato: '',
+                celular: '',
+                edad: '',
+                direccion: '',
+                correo: '',
+            },
+        ]);
     };
 
+    // Eliminar una fila de estudiantes
     const removeRow = (index) => {
         const updatedStudents = [...students];
         updatedStudents.splice(index, 1);
         setStudents(updatedStudents);
     };
 
+    // Enviar estudiantes al backend
     const addStudents = async () => {
-        if (!selectedDropdowns.grade || !selectedDropdowns.institution || !selectedDropdowns.classroom || !selectedDropdowns.schedule) {
-            alert('Por favor, selecciona todos los campos de los dropdowns.');
+        if (!selectedInstitution || !selectedClassroom) {
+            alert('Por favor selecciona una institución y un aula.');
             return;
         }
 
         try {
-            const response = await axios.post('http://localhost:5000/add-students', {
-                students: students.map((student) => ({
-                    fullName: student.fullName.trim(),
-                    phoneNumber: student.phoneNumber.trim(),
-                    email: student.email.trim(),
-                })),
-                grade: selectedDropdowns.grade,
-                institution: selectedDropdowns.institution,
-                classroom: selectedDropdowns.classroom,
-                schedule: selectedDropdowns.schedule,
+            const response = await axios.post('http://localhost:5000/alumnos', {
+                students,
+                id_aula: selectedClassroom,
             });
 
-            if (response.data.success) {
-                alert('Estudiantes agregados exitosamente.');
-                setStudents([]); // Limpiar tabla
+            if (response.status === 201) {
+                alert('Estudiantes registrados exitosamente.');
+                setStudents([]); // Limpiar la tabla
             } else {
                 console.error('Error del servidor:', response.data.message);
-                alert(response.data.message || 'Error al agregar estudiantes.');
+                alert(response.data.message || 'Error al registrar estudiantes.');
             }
         } catch (error) {
             console.error('Error en la solicitud:', error.response?.data || error.message);
-            alert('Error al agregar estudiantes.');
+            alert('Error al registrar estudiantes.');
         }
     };
 
@@ -107,28 +130,20 @@ const Enrollment = () => {
                 <h2 className="typewriter-text">{typedText}</h2>
             </div>
             <div className="filters-container">
-                <select name="grade" onChange={handleDropdownChange}>
-                    <option value="">Grado</option>
-                    {dropdownOptions.grades.map((grade) => (
-                        <option key={grade} value={grade}>{grade}</option>
-                    ))}
-                </select>
                 <select name="institution" onChange={handleDropdownChange}>
                     <option value="">Institución</option>
-                    {dropdownOptions.institutions.map((institution) => (
-                        <option key={institution} value={institution}>{institution}</option>
+                    {institutions.map((institution) => (
+                        <option key={institution.cod_DANE} value={institution.cod_DANE}>
+                            {institution.nombre}
+                        </option>
                     ))}
                 </select>
                 <select name="classroom" onChange={handleDropdownChange}>
                     <option value="">Aula</option>
-                    {dropdownOptions.classrooms.map((classroom) => (
-                        <option key={classroom} value={classroom}>{classroom}</option>
-                    ))}
-                </select>
-                <select name="schedule" onChange={handleDropdownChange}>
-                    <option value="">Horario</option>
-                    {dropdownOptions.schedules.map((schedule) => (
-                        <option key={schedule} value={schedule}>{schedule}</option>
+                    {classrooms.map((classroom) => (
+                        <option key={classroom.id_aula} value={classroom.id_aula}>
+                            {`${classroom.grad_num}° - Grupo ${classroom.num_grupo} (${classroom.jornada})`}
+                        </option>
                     ))}
                 </select>
             </div>
@@ -136,8 +151,17 @@ const Enrollment = () => {
             <table className="students-table">
                 <thead>
                     <tr>
-                        <th>Nombre Completo</th>
+                        <th>Tipo ID</th>
+                        <th>Primer Nombre</th>
+                        <th>Segundo Nombre</th>
+                        <th>Primer Apellido</th>
+                        <th>Segundo Apellido</th>
+                        <th>Género</th>
+                        <th>Fecha Nacimiento</th>
+                        <th>Estrato</th>
                         <th>Número de Teléfono</th>
+                        <th>Edad</th>
+                        <th>Dirección</th>
                         <th>Correo Electrónico</th>
                         <th>Acciones</th>
                     </tr>
@@ -145,33 +169,17 @@ const Enrollment = () => {
                 <tbody>
                     {students.map((student, index) => (
                         <tr key={index}>
-                            <td>
-                                <input
-                                    type="text"
-                                    value={student.fullName}
-                                    onChange={(e) => handleInputChange(index, 'fullName', e.target.value)}
-                                    placeholder="Nombre completo"
-                                    className="input-clean"
-                                />
-                            </td>
-                            <td>
-                                <input
-                                    type="text"
-                                    value={student.phoneNumber}
-                                    onChange={(e) => handleInputChange(index, 'phoneNumber', e.target.value)}
-                                    placeholder="Teléfono"
-                                    className="input-clean"
-                                />
-                            </td>
-                            <td>
-                                <input
-                                    type="email"
-                                    value={student.email}
-                                    onChange={(e) => handleInputChange(index, 'email', e.target.value)}
-                                    placeholder="Correo electrónico"
-                                    className="input-clean"
-                                />
-                            </td>
+                            {Object.keys(student).map((field) => (
+                                <td key={field}>
+                                    <input
+                                        type="text"
+                                        value={student[field]}
+                                        onChange={(e) => handleInputChange(index, field, e.target.value)}
+                                        placeholder={field.replace(/_/g, ' ')}
+                                        className="input-clean"
+                                    />
+                                </td>
+                            ))}
                             <td>
                                 <button onClick={() => removeRow(index)} className="btn-remove">✖</button>
                             </td>
@@ -181,7 +189,7 @@ const Enrollment = () => {
             </table>
             <div className="actions-container">
                 <button onClick={addRow} className="btn-action">Añadir Fila</button>
-                <button onClick={addStudents} className="btn-action">Agregar Estudiantes</button>
+                <button onClick={addStudents} className="btn-action">Registrar Estudiantes</button>
             </div>
         </div>
     );

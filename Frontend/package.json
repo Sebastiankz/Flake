@@ -1,16 +1,38 @@
 {
-  "name": "frontend-pf",
-  "version": "0.1.0",
+  "name": "flake-fullstack",
+  "version": "1.0.0",
   "private": true,
+  "type": "module",
+  "main": "Node/app.js",
+  "description": "",
+  "author": "",
+  "license": "ISC",
+  "scripts": {
+    "start:backend": "node Node/app.js",
+    "start:frontend": "react-scripts start",
+    "start": "concurrently \"npm run start:backend\" \"npm run start:frontend\"",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
   "dependencies": {
     "@fontsource/poppins": "^5.1.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^1.7.7",
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "bootstrap": "^5.3.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
     "date-fns": "^4.1.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
     "font-awesome": "^4.7.0",
+    "jsonwebtoken": "^9.0.2",
+    "mysql2": "^3.11.4",
     "react": "^18.3.1",
     "react-big-calendar": "^1.15.0",
     "react-datepicker": "^7.5.0",
@@ -18,20 +40,10 @@
     "react-icons": "^5.3.0",
     "react-router-dom": "^6.28.0",
     "react-scripts": "5.0.1",
+    "sequelize": "^6.37.5",
     "web-vitals": "^2.1.4",
-    "xlsx": "^0.18.5"
-  },
-  "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
-    "eject": "react-scripts eject"
-  },
-  "eslintConfig": {
-    "extends": [
-      "react-app",
-      "react-app/jest"
-    ]
+    "xlsx": "^0.18.5",
+    "concurrently": "^8.2.0"
   },
   "browserslist": {
     "production": [
