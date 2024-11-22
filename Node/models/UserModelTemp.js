@@ -146,7 +146,7 @@ const AlumnoModel = db.define('Alumnos', {
         allowNull: false
     },
     tipo_id: {
-        type: DataTypes.STRING(20),
+        type: DataTypes.CHAR(2), 
         allowNull: false
     },
     prim_nom: {
@@ -155,6 +155,7 @@ const AlumnoModel = db.define('Alumnos', {
     },
     seg_nom: {
         type: DataTypes.STRING(50),
+        allowNull: true // Opcional
     },
     prim_apell: {
         type: DataTypes.STRING(50),
@@ -178,44 +179,36 @@ const AlumnoModel = db.define('Alumnos', {
     },
     celular: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true // Opcional
     },
     edad: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: true // Opcional
     },
     direccion: {
         type: DataTypes.STRING(100),
-        allowNull: false
+        allowNull: true // Opcional
     },
     correo: {
         type: DataTypes.STRING(100),
-        allowNull: false
+        allowNull: true // Opcional
     },
     id_aula: {
-        type: DataTypes.INTEGER,  // Cambiado de VARCHAR a INTEGER
+        type: DataTypes.STRING(50), 
         references: {
-            model: 'Aulas',  // Nombre de la tabla referenciada
-            key: 'id_aula'  // Asegúrate de que 'id_aula' existe en la tabla Aulas
+            model: 'Aulas',
+            key: 'id_aula'
         },
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE',
-    },
-    cod_DANE: {
-        type: DataTypes.STRING(50),
-        references: {
-            model: 'Instituciones',  // Nombre de la tabla referenciada
-            key: 'cod_DANE'  // Asegúrate de que 'cod_DANE' existe en la tabla Instituciones
-        },
-        onDelete: 'RESTRICT',
-        onUpdate: 'CASCADE',
+        allowNull: false
     }
 }, {
-    tableName: 'Alumnos',  // Nombre de la tabla en la base de datos
-    timestamps: false  // Desactivar los timestamps por defecto
+    tableName: 'Alumnos',
+    timestamps: false
 });
 
 AlumnoModel.belongsTo(AulaModel, { foreignKey: 'id_aula' });
-AlumnoModel.belongsTo(InstitucionModel, { foreignKey: 'cod_DANE' });
+
 
 export { AdministradorModel, ProfesorModel, AlumnoModel };

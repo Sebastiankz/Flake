@@ -1,6 +1,5 @@
 import { AlumnoModel } from "../models/UserModelTemp.js";
 import AulaModel from "../models/AulaModel.js";
-import InstitucionModel from "../models/InstitucionModel.js";
 
 export const getAllAlumnos = async (req, res) => {
     try {
@@ -43,7 +42,7 @@ export const getOneAlumno = async (req, res) => {
 export const updateAlumno = async (req, res) => {
     try {
         const { id_alumno } = req.params;
-        const { cod_DANE } = req.body;
+        const { id_aula } = req.body;
 
         const alumno = await AlumnoModel.findOne({
             where: { id_alumno }
@@ -55,9 +54,9 @@ export const updateAlumno = async (req, res) => {
             });
         }
 
-        const institucion = await InstitucionModel.findByPk(cod_DANE);
-        if (!institucion) {
-            return res.status(404).json({ message: 'Institucion no encontrada' });
+        const aula = await AulaModel.findByPk(id_aula);
+        if (!aula) {
+            return res.status(404).json({ message: 'aula no encontrada' });
         }
 
         const updatedAlumno = await alumno.update(req.body);
@@ -121,11 +120,10 @@ export const createAlumno = async (req, res) => {
             edad,
             direccion,
             correo,
-            id_aula,
-            cod_DANE
+            id_aula
         } = req.body;
 
-        if (!tipo_id || !prim_nom || !prim_apell || !seg_apell || !genero || !fecha_nacimiento || !id_aula || !cod_DANE) {
+        if (!tipo_id || !prim_nom || !prim_apell || !seg_apell || !genero || !fecha_nacimiento || !id_aula) {
             return res.status(400).json({
                 message: 'Todos los campos obligatorios deben ser proporcionados',
                 error: error.message

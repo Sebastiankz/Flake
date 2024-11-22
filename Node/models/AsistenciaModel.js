@@ -5,16 +5,24 @@ import HorarioModel from './HorarioModel.js';
 
 const AsistenciaModel = db.define('Asistencias', {
     id_asistencia: {
-        type: DataTypes.STRING, // Coincide con VARCHAR(50) en MySQL
+        type: DataTypes.STRING(50),
         primaryKey: true,
         allowNull: false,
     },
-    estado: {
-        type: DataTypes.CHAR(1), // Coincide con CHAR(1) en MySQL
+    estado_alumno: {
+        type: DataTypes.ENUM('Presente', 'Ausente', 'Tarde'), 
         allowNull: false,
     },
+    estado_profesor: {
+        type: DataTypes.ENUM('Presente', 'Ausente', 'Tarde'), 
+        allowNull: false,
+    },
+    motivo_inasistencia_profesor: {
+        type: DataTypes.STRING(500), 
+        allowNull: true, 
+    },
     id_profesor: {
-        type: DataTypes.INTEGER, // Coincide con INT(20) en MySQL
+        type: DataTypes.INTEGER, 
         allowNull: false,
         references: {
             model: ProfesorModel,
@@ -23,7 +31,7 @@ const AsistenciaModel = db.define('Asistencias', {
         onDelete: 'CASCADE',
     },
     id_horario: {
-        type: DataTypes.STRING, // Coincide con VARCHAR(50) en MySQL
+        type: DataTypes.STRING(50), 
         allowNull: false,
         references: {
             model: HorarioModel,
@@ -32,7 +40,7 @@ const AsistenciaModel = db.define('Asistencias', {
         onDelete: 'RESTRICT',
     },
     id_alumno: {
-        type: DataTypes.INTEGER, // Coincide con INT(20) en MySQL
+        type: DataTypes.INTEGER, 
         allowNull: false,
         references: {
             model: AlumnoModel,
@@ -41,8 +49,8 @@ const AsistenciaModel = db.define('Asistencias', {
         onDelete: 'CASCADE',
     },
 }, {
-    tableName: 'Asistencias', // Nombre de la tabla en MySQL
-    timestamps: false,       // No usar columnas createdAt y updatedAt
+    tableName: 'Asistencias',
+    timestamps: false, 
 });
 
 AsistenciaModel.belongsTo(AlumnoModel, { foreignKey: 'id_alumno' });
@@ -50,3 +58,4 @@ AsistenciaModel.belongsTo(HorarioModel, { foreignKey: 'id_horario' });
 AsistenciaModel.belongsTo(ProfesorModel, { foreignKey: 'id_profesor' });
 
 export default AsistenciaModel;
+
