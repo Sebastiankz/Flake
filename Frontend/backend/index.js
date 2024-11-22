@@ -41,7 +41,6 @@ db.connect((err) => {
 // ----------------------------- RUTAS -----------------------------
 
 // Ruta de login
-// Ruta de login
 app.post('/login', (req, res) => {
     const { username, password, role } = req.body;
 
@@ -64,8 +63,6 @@ app.post('/login', (req, res) => {
 });
 
 
-
-
 app.get('/user-info', (req, res) => {
     if (!req.session || !req.session.user) {
         return res.status(401).json({ error: 'No autorizado' });
@@ -74,7 +71,6 @@ app.get('/user-info', (req, res) => {
     const { username, role } = req.session.user; // Directamente extraer username y role
     res.json({ username, role });
 });
-
 
 
 // Ruta para obtener las opciones de los dropdowns
@@ -259,10 +255,24 @@ app.get('/schedule', (req, res) => {
                 start_time: row.start_time,
                 end_time: row.end_time,
             }));
-            res.json(formattedResults); // Enviar resultados formateados
+            res.json(formattedResults); 
         }
     });
 });
+
+// Ruta para obtener las aulas
+app.get('/aulas', (req, res) => {
+    const query = 'SELECT * FROM Aulas'; 
+    db.query(query, (err, results) => {
+        if (err) {
+            console.error('Error al obtener las aulas:', err);
+            res.status(500).json({ error: 'Error al obtener aulas' });
+        } else {
+            res.json(results);
+        }
+    });
+});
+
 
 
 // ----------------------------- INICIAR SERVIDOR -----------------------------
