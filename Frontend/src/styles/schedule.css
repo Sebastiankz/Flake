@@ -1,0 +1,124 @@
+.schedule-page {
+    padding: 20px;
+}
+
+.schedule-title {
+    font-size: 32px;
+    color: #000; /* Cambiar color al morado del diseño */
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: left; /* Alinear a la izquierda */
+    animation: typing 2s steps(20, end), blink-caret 0.5s step-end ; /* Efecto máquina de escribir */
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 3px solid transparent; /* Línea del efecto */    
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: #4b0e8a;
+    }
+}
+
+.actions-container {
+    display: flex;
+    justify-content: left; /* Cambiar alineación a la izquierda */
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.select-classroom {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.select-classroom:hover,
+.select-classroom:focus {
+    border-color: #4b0e8a; /* Bordes morados al enfocarse o pasar el mouse */
+}
+
+.btn-refresh {
+    background-color: #4b0e8a;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: normal;
+    transition: background-color 0.3s;
+}
+
+.btn-refresh:hover {
+    background-color: #3a076c; /* Más oscuro al pasar el mouse */
+}
+
+.calendar-container {
+    margin-top: 20px;
+    border-radius: 8px; /* Bordes redondeados */
+    overflow: hidden;
+}
+
+.rbc-calendar {
+    background-color: transparent !important; /* Quitar fondo gris */
+}
+
+
+.select-classroom {
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    background-color: #fff;
+    font-size: 16px; /* Tamaño más grande, similar al botón */
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.select-classroom:hover,
+.select-classroom:focus {
+    border-color: #4b0e8a; /* Bordes morados al enfocarse o pasar el mouse */
+}
+
+/* Estilo para la tabla en la vista "Agenda" */
+.rbc-agenda-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.rbc-agenda-table th {
+    background-color: #4b0e8a; /* Morado para el encabezado */
+    color: white; /* Texto blanco */
+    font-size: 14px;
+    padding: 10px;
+    text-align: left;
+}
+
+.rbc-agenda-table td {
+    background-color: #fff; /* Fondo blanco para las filas */
+    color: #000; /* Texto negro */
+    font-size: 14px;
+    padding: 10px;
+    border: 1px solid #ddd; /* Bordes ligeros */
+}
+
+.rbc-agenda-table tr:nth-child(even) td {
+    background-color: #f9f9f9; /* Fondo gris claro para filas pares */
+}
+

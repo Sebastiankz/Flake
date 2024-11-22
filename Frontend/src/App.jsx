@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
@@ -13,41 +13,47 @@ import './App.css';
 
 const App = () => {
     const [isAuthenticated, setIsAuthenticated] = useState(false);
-    const userName = "Nombre Usuario";
-    const userRole = "Instructor";
 
-    // Función para manejar el inicio de sesión
+    useEffect(() => {
+        const username = localStorage.getItem('username');
+        if (username) {
+            setIsAuthenticated(true);
+        }
+    }, []);
+
     const handleLogin = () => {
         setIsAuthenticated(true);
+    };
+
+    const handleLogout = () => {
+        localStorage.clear();
+        setIsAuthenticated(false);
     };
 
     return (
         <div className="app">
             {isAuthenticated ? (
                 <>
-                    <Navbar userName={userName} userRole={userRole} />
+                    <Navbar />
                     <div className="main-container">
-                        <Sidebar />
+                        <Sidebar handleLogout={handleLogout} />
                         <div className="content-container">
-                        <Routes>
-                            <Route path="/" element={<Navigate to="/login" />} />
-                            <Route path="/login" element={<Login onLogin={handleLogin} />} />
-                            <Route path="/inicio" element={isAuthenticated ? <Home /> : <Navigate to="/login" />} />
-                            <Route path="/inscripcion" element={isAuthenticated ? <Inscripcion /> : <Navigate to="/login" />} />
-                            <Route path="/asistencia" element={isAuthenticated ? <Asistencia /> : <Navigate to="/login" />} />
-                            <Route path="/notas" element={isAuthenticated ? <Notas /> : <Navigate to="/login" />} />
-                            <Route path="/horario" element={isAuthenticated ? <Horario /> : <Navigate to="/login" />} />
-                            <Route path="*" element={<Navigate to="/inicio" />} />
-                        </Routes>
-
+                            <Routes>
+                                <Route path="/inicio" element={<Home />} />
+                                <Route path="/inscripcion" element={<Inscripcion />} />
+                                <Route path="/asistencia" element={<Asistencia />} />
+                                <Route path="/notas" element={<Notas />} />
+                                <Route path="/horario" element={<Horario />} />
+                                <Route path="*" element={<Navigate to="/inicio" />} />
+                            </Routes>
                         </div>
                     </div>
                     <Footer />
                 </>
             ) : (
                 <Routes>
-                    <Route path="/" element={<Navigate to="/login" />} />
                     <Route path="/login" element={<Login onLogin={handleLogin} />} />
+                    <Route path="*" element={<Navigate to="/login" />} />
                 </Routes>
             )}
         </div>
