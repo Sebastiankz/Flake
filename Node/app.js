@@ -15,7 +15,7 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-
+//hola
 app.use('/profesores', profesorRoutes); // Rutas de profesores  
 app.use('/alumnos', alumnoRoutes); // Rutas de alumnos
 app.use('/horarios', horarioRoutes); // Rutas de horarios
