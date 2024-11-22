@@ -3,9 +3,9 @@ import { FaSnowflake } from 'react-icons/fa';
 import '../styles/navbar.css';
 
 const Navbar = () => {
-    const fullName = localStorage.getItem('full_name'); // Obtener full_name
-    const username = localStorage.getItem('username'); // Obtener username
-    const userRole = localStorage.getItem('role'); // Obtener role
+    const fullName = localStorage.getItem('full_name');
+    const username = localStorage.getItem('username');
+    const userRole = localStorage.getItem('role');
 
     return (
         <header className="navbar">
@@ -15,7 +15,7 @@ const Navbar = () => {
             </div>
             <div className="navbar-right">
                 <div className="user-info">
-                    <span className="user-name">{fullName !== 'undefined' ? fullName : (username !== 'undefined' ? username : 'Usuario')}</span>
+                    <span className="user-name">{fullName || username || 'Usuario'}</span>
                     <span className="user-role">
                         {userRole === 'admin' ? 'Administrador' : 'Instructor'}
                     </span>

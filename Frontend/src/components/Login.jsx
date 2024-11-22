@@ -38,14 +38,13 @@ const Login = ({ onLogin }) => {
                 role,
             });
     
-            console.log('Respuesta del servidor:', response.data);  // <-- Verificar que `username` y `full_name` están en la respuesta
-    
             if (response.data.success) {
                 const { username, full_name, role } = response.data.user;
                 localStorage.setItem('username', username || 'Desconocido');
                 localStorage.setItem('full_name', full_name || 'Desconocido');
                 localStorage.setItem('role', role || '');
-                navigate('/inicio', { replace: true });
+                onLogin(); // Cambia el estado de autenticación en App.jsx
+                navigate('/inicio', { replace: true }); // Redirige a la página de inicio
             } else {
                 alert('Credenciales incorrectas');
             }
@@ -54,8 +53,6 @@ const Login = ({ onLogin }) => {
             alert('Error en el servidor');
         }
     };
-    
-
 
     return (
         <div className="login-background">

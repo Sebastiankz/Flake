@@ -7,7 +7,7 @@ import {
     FaClipboardList,
     FaBook,
     FaClock,
-    FaSignOutAlt
+    FaSignOutAlt,
 } from 'react-icons/fa';
 import '../styles/sidebar.css';
 
@@ -52,11 +52,13 @@ const Sidebar = ({ handleLogout }) => {
                         {isOpen && <span>Horario</span>}
                     </NavLink>
                 </li>
+                <li className="menu-item">
+                    <NavLink to="/login" onClick={handleLogout} className={({ isActive }) => (isActive ? 'active-link' : '')}>
+                        <FaSignOutAlt className={`menu-icon ${isOpen ? '' : 'hidden'}`} />
+                        {isOpen && <span>Cerrar sesión</span>}
+                    </NavLink>
+                </li>
             </ul>
-            <div className="logout" onClick={handleLogout}>
-                <FaSignOutAlt className={`menu-icon ${isOpen ? '' : 'hidden'}`} />
-                {isOpen && <span>Cerrar sesión</span>}
-            </div>
         </div>
     );
 };

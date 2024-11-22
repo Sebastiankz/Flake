@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Sidebar from './components/Sidebar';
 import Footer from './components/Footer';
@@ -12,32 +12,31 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
 const App = () => {
-    const [isAuthenticated, setIsAuthenticated] = useState(
-        !!localStorage.getItem('username') // Verificar si hay usuario almacenado
-    );
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
-    // Función para manejar el inicio de sesión
+    useEffect(() => {
+        const username = localStorage.getItem('username');
+        if (username) {
+            setIsAuthenticated(true);
+        }
+    }, []);
+
     const handleLogin = () => {
         setIsAuthenticated(true);
     };
 
-    // Función para manejar el cierre de sesión
     const handleLogout = () => {
-        localStorage.clear(); // Limpiar datos almacenados
-        setIsAuthenticated(false); // Actualizar estado de autenticación
+        localStorage.clear();
+        setIsAuthenticated(false);
     };
 
     return (
         <div className="app">
             {isAuthenticated ? (
                 <>
-                    <Navbar
-                        userName={localStorage.getItem('username')}
-                        userRole={localStorage.getItem('role')}
-                        onLogout={handleLogout} // Pasar la función de logout (si se requiere en Navbar)
-                    />
+                    <Navbar />
                     <div className="main-container">
-                        <Sidebar handleLogout={handleLogout} /> {/* Pasar handleLogout al Sidebar */}
+                        <Sidebar handleLogout={handleLogout} />
                         <div className="content-container">
                             <Routes>
                                 <Route path="/inicio" element={<Home />} />
@@ -53,8 +52,8 @@ const App = () => {
                 </>
             ) : (
                 <Routes>
-                    <Route path="/" element={<Navigate to="/login" />} />
                     <Route path="/login" element={<Login onLogin={handleLogin} />} />
+                    <Route path="*" element={<Navigate to="/login" />} />
                 </Routes>
             )}
         </div>
