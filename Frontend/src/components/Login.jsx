@@ -38,9 +38,14 @@ const Login = ({ onLogin }) => {
                 role,
             });
     
+            console.log('Respuesta del servidor:', response.data);  // <-- Verificar que `username` y `full_name` están en la respuesta
+    
             if (response.data.success) {
-                onLogin(); // Cambia el estado a autenticado
-                navigate('/inicio', { replace: true }); // Redirige al Home
+                const { username, full_name, role } = response.data.user;
+                localStorage.setItem('username', username || 'Desconocido');
+                localStorage.setItem('full_name', full_name || 'Desconocido');
+                localStorage.setItem('role', role || '');
+                navigate('/inicio', { replace: true });
             } else {
                 alert('Credenciales incorrectas');
             }
@@ -50,6 +55,7 @@ const Login = ({ onLogin }) => {
         }
     };
     
+
 
     return (
         <div className="login-background">

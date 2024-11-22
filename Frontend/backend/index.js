@@ -16,10 +16,11 @@ app.use(session({
     saveUninitialized: false,
     cookie: {
         httpOnly: true,
-        secure: false,
+        secure: false, // Debe estar en `false` para desarrollo local
         sameSite: 'lax',
     },
 }));
+
 
 // Configuración de la conexión a MySQL
 const db = mysql.createConnection({
@@ -40,28 +41,41 @@ db.connect((err) => {
 // ----------------------------- RUTAS -----------------------------
 
 // Ruta de login
+// Ruta de login
 app.post('/login', (req, res) => {
     const { username, password, role } = req.body;
 
-    if (!username || !password || !role) {
-        return res.status(400).json({ error: 'Faltan datos de login' });
-    }
-
-    const query = 'SELECT * FROM users WHERE username = ? AND password = ? AND role = ?';
+    const query = 'SELECT username, full_name, role FROM users WHERE username = ? AND password = ? AND role = ?';
     db.query(query, [username, password, role], (err, results) => {
         if (err) {
+            console.error('Error en el servidor:', err);
             return res.status(500).json({ error: 'Error en el servidor' });
         }
 
         if (results.length > 0) {
-            req.session.username = results[0].username;
-            req.session.role = results[0].role;
-            res.json({ success: true });
+            const user = results[0];
+            console.log('Usuario encontrado:', user);  // <-- Verifica que `full_name` y `username` estén presentes
+            req.session.user = user; // Almacena el usuario en la sesión
+            res.json({ success: true, user }); // Enviar `full_name` y `username` en la respuesta
         } else {
             res.json({ success: false, message: 'Credenciales incorrectas' });
         }
     });
 });
+
+
+
+
+app.get('/user-info', (req, res) => {
+    if (!req.session || !req.session.user) {
+        return res.status(401).json({ error: 'No autorizado' });
+    }
+
+    const { username, role } = req.session.user; // Directamente extraer username y role
+    res.json({ username, role });
+});
+
+
 
 // Ruta para obtener las opciones de los dropdowns
 app.get('/options', async (req, res) => {
