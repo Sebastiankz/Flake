@@ -1,14 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { FaUserGraduate, FaClipboardList, FaBook, FaClock } from 'react-icons/fa';
 import '../styles/home.css';
 
 const Home = () => {
     const [typedText, setTypedText] = useState('');
     const [showCursor, setShowCursor] = useState(true);
-    const [username, setUsername] = useState('');
-    const [password, setPassword] = useState('');
-    const [errorMessage, setErrorMessage] = useState('');
     const message = 'Bienvenido';
     const navigate = useNavigate();
 
@@ -28,58 +25,54 @@ const Home = () => {
         return () => clearInterval(typingInterval);
     }, []);
 
-    const handleLogin = async () => {
-        try {
-            const response = await axios.post('http://localhost:5000/login', {
-                username,
-                password,
-            });
+    const imagePaths = [
+        '/assets/carrusel/img1.jpg',
+        '/assets/carrusel/img2.jpg',
+        '/assets/carrusel/img3.jpg',
+        '/assets/carrusel/img4.jpg',
+        '/assets/carrusel/img5.jpg',
+        '/assets/carrusel/img6.jpg',
+        '/assets/carrusel/img7.jpg',
+        '/assets/carrusel/img8.jpg',
+    ];
 
-            if (response.data.success) {
-                // Guardar el token o los datos del usuario en localStorage/sessionStorage si es necesario
-                navigate('/dashboard'); // Redirigir al dashboard tras el login
-            } else {
-                setErrorMessage(response.data.message || 'Credenciales incorrectas');
-            }
-        } catch (error) {
-            console.error('Error en el login:', error);
-            setErrorMessage('Error al iniciar sesión. Inténtalo de nuevo.');
-        }
+    const handleNavigation = (path) => {
+        navigate(path);
     };
 
     return (
         <div className="home-container aligned">
             <div className="header-section">
                 <h1 className="title-text">{typedText}{showCursor && <span className="cursor">|</span>}</h1>
-                <p className="subtitle-text">Por favor, inicia sesión para continuar.</p>
-                <div className="login-container">
-                    <div className="login-inputs">
-                        <input
-                            type="text"
-                            placeholder="Usuario"
-                            value={username}
-                            onChange={(e) => setUsername(e.target.value)}
-                            className="login-input"
-                        />
-                        <input
-                            type="password"
-                            placeholder="Contraseña"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="login-input"
-                        />
-                    </div>
-                    {errorMessage && <p className="error-message">{errorMessage}</p>}
-                    <button className="login-button" onClick={handleLogin}>
-                        Iniciar sesión
-                    </button>
+                <p className="subtitle-text">Nos alegra tenerte aquí. Selecciona una opción para continuar.</p>
+                <div className="logos-container">
+                    <img src="/assets/logos/unLogo.png" alt="Universidad del Norte" className="home-logo" />
+                    <img src="/assets/logos/britishCouncilLogo.png" alt="British Council" className="home-logo" />
+                    <img src="/assets/logos/alcaldiaLogo.png" alt="Alcaldía de Barranquilla" className="home-logo" />
                 </div>
             </div>
 
-            <div className="logos-container">
-                <img src="/assets/logos/unLogo.png" alt="Universidad del Norte" className="home-logo" />
-                <img src="/assets/logos/britishCouncilLogo.png" alt="British Council" className="home-logo" />
-                <img src="/assets/logos/alcaldiaLogo.png" alt="Alcaldía de Barranquilla" className="home-logo" />
+            <div className="buttons-container aligned">
+                <button className="rect-button" onClick={() => handleNavigation('/inscripcion')}>
+                    <FaUserGraduate className="button-icon" /> Inscripción de estudiantes
+                </button>
+                <button className="rect-button" onClick={() => handleNavigation('/asistencia')}>
+                    <FaClipboardList className="button-icon" /> Toma de asistencia
+                </button>
+                <button className="rect-button" onClick={() => handleNavigation('/notas')}>
+                    <FaBook className="button-icon" /> Toma de notas
+                </button>
+                <button className="rect-button" onClick={() => handleNavigation('/horario')}>
+                    <FaClock className="button-icon" /> Horario del tutor
+                </button>
+            </div>
+
+            <div className="carousel-container aligned">
+                <div className="carousel-track auto-slide">
+                    {imagePaths.map((path, index) => (
+                        <img key={index} src={path} alt={`Slide ${index + 1}`} className="carousel-image large-carousel-image" />
+                    ))}
+                </div>
             </div>
         </div>
     );

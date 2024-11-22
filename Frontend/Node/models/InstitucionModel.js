@@ -7,11 +7,11 @@ const InstitucionModel = db.define('instituciones', {
         primaryKey: true,
         allowNull: false
     },
-    numero: {  // Se agregó este campo
+    numero: {
         type: DataTypes.STRING(100),
         allowNull: false
     },
-    localidad: {  // Se agregó este campo
+    localidad: {
         type: DataTypes.STRING(50),
         allowNull: false
     },
@@ -27,13 +27,13 @@ const InstitucionModel = db.define('instituciones', {
         type: DataTypes.STRING(100),
         allowNull: false
     },
-    barrio: {  // Se agregó este campo
+    barrio: {
         type: DataTypes.STRING(50),
         allowNull: false
     }
 }, {
-    tableName: 'Instituciones', // Nombre de la tabla en la base de datos
-    timestamps: false           // Desactivar los timestamps por defecto
+    tableName: 'Instituciones',
+    timestamps: false
 });
 
 export default InstitucionModel;

@@ -3,8 +3,9 @@ import cors from 'cors';
 import session from 'express-session';
 import db from './database/db.js';
 
-import loginRoutes from './login.js'; 
-import profesorRoutes from './routes/ProfesorRoutes.js'; 
+// Importar las rutas
+import loginRoutes from './login.js';
+import profesorRoutes from './routes/ProfesorRoutes.js';
 import alumnoRoutes from './routes/AlumnoRoutes.js';
 import horarioRoutes from './routes/HorarioRoutes.js';
 import aulaRoutes from './routes/AulaRoutes.js';
@@ -14,11 +15,14 @@ import asignacionRoutes from './routes/AsignacionRoutes.js';
 import RegistrarAsistencia from './routes/RegistroAsistenciaRoutes.js';
 import evaluacionRoutes from './routes/EvaluacionRoutes.js';
 
+// Importar las asociaciones (relaciones entre los modelos)
+import { InstitucionModel, AulaModel, ProfesorModel } from './models/associations.js';  // Importar las asociaciones
+
 const app = express();
 
 // Configuración de CORS
 app.use(cors({
-    origin: 'http://localhost:3000', 
+    origin: 'http://localhost:3000',
     credentials: true, // Permitir cookies
 }));
 
@@ -30,6 +34,7 @@ try {
     await db.authenticate();
     console.log('Conexión establecida con la base de datos.');
 
+    // Sincronizar los modelos después de que las asociaciones estén definidas
     await db.sync();
     console.log('Modelos sincronizados con la base de datos.');
 } catch (error) {
@@ -38,14 +43,14 @@ try {
 
 // ----------------------------- RUTAS -----------------------------
 console.log('Configurando rutas...');
-app.use('/profesores', profesorRoutes);  
-app.use('/alumnos', alumnoRoutes); 
-app.use('/horarios', horarioRoutes); 
-app.use('/aulas', aulaRoutes); 
-app.use('/instituciones', institucionRoutes); 
-app.use('/login', loginRoutes); 
-app.use('/horarioProfesor', HorarioProfesorRoutes); 
-app.use('/asignaciones', asignacionRoutes); 
+app.use('/profesores', profesorRoutes);
+app.use('/alumnos', alumnoRoutes);
+app.use('/horarios', horarioRoutes);
+app.use('/aulas', aulaRoutes);
+app.use('/instituciones', institucionRoutes);
+app.use('/login', loginRoutes);
+app.use('/horarioProfesor', HorarioProfesorRoutes);
+app.use('/asignaciones', asignacionRoutes);
 app.use('/asistencia', RegistrarAsistencia);
 app.use('/evaluaciones', evaluacionRoutes);
 

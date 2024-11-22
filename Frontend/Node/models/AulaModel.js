@@ -1,6 +1,5 @@
 import { DataTypes } from 'sequelize';
 import db from '../database/db.js';
-import InstitucionModel from './InstitucionModel.js';
 
 const AulaModel = db.define('Aulas', {
     id_aula: {
@@ -28,7 +27,7 @@ const AulaModel = db.define('Aulas', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-            model: 'Profesores', 
+            model: 'Profesores',
             key: 'id_profesor'
         },
         onDelete: 'RESTRICT',
@@ -38,17 +37,15 @@ const AulaModel = db.define('Aulas', {
         type: DataTypes.STRING(50),
         allowNull: false,
         references: {
-            model: 'Instituciones', 
+            model: 'Instituciones',
             key: 'cod_DANE'
         },
         onDelete: 'RESTRICT',
         onUpdate: 'CASCADE'
     }
 }, {
-    tableName: 'Aulas', 
-    timestamps: false   
+    tableName: 'Aulas',
+    timestamps: false
 });
-
-AulaModel.belongsTo(InstitucionModel, { foreignKey: 'cod_DANE' });
 
 export default AulaModel;
