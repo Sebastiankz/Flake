@@ -1,0 +1,163 @@
+.admpersonal-page {
+    padding: 20px;
+}
+
+/* Estilo del título con efecto máquina de escribir */
+.typewriter-title {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: left;
+    animation: typing 2s steps(40, end), blink 0.5s step-end infinite alternate;
+    white-space: nowrap;
+    overflow: hidden;
+    border-right: 4px solid #4b0e8a;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink {
+    from {
+        border-right-color: transparent;
+    }
+    to {
+        border-right-color: #4b0e8a;
+    }
+}
+
+/* Contenedor para la tabla */
+.table-container {
+    margin-top: 20px;
+}
+
+/* Tabla de usuarios */
+.student-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.student-table th,
+.student-table td {
+    padding: 12px;
+    text-align: left;
+}
+
+.student-table th {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.users-table tr:hover {
+    background-color: #f9f9f9;
+}
+
+/* Botones de acción dentro de la tabla */
+.btn-edit {
+    background-color: #4b0e8a;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    margin-right: 5px;
+}
+
+.btn-delete {
+    background-color: #d9534f;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-add {
+    background-color: #4b0e8a;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+    display: block;
+    margin: 20px auto; /* Centrar botón */
+    border-color: #4b0e8a;
+}
+
+.student-form {
+    margin-top: 20px;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.student-form h3 {
+    font-size: 24px;
+    color: #333;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.student-form input,
+.student-form select {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.student-form input:focus,
+.student-form select:focus {
+    outline: none;
+    border-color: #4b0e8a;
+    box-shadow: 0 0 5px rgba(75, 14, 138, 0.5);
+}
+
+.btn-save {
+    background-color: #4b0e8a;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    display: block;
+    margin: 0 auto; /* Centrar botón */
+}
+
+/* Estilo para las acciones de la tabla */
+.students-table td {
+    vertical-align: middle;
+}
+
+.action-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaciado entre los botones */
+    padding: 10px;
+}
+
+.btn-edit, .btn-delete {
+    width: 100px; /* Ancho consistente para ambos botones */
+    text-align: center;
+}
+
+.btn-cancel {
+    background-color: #4b0e8a;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    display: block;
+}

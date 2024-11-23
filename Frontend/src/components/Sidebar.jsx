@@ -45,7 +45,6 @@ const Sidebar = ({ handleLogout }) => {
         { path: '/admNotas', label: 'Notas', icon: <FaBook /> },
         { path: '/admTutores', label: 'Tutores', icon: <FaChalkboardTeacher /> },
         { path: '/admHorarios', label: 'Horarios', icon: <FaClock /> },
-        { path: '/inscripcion', label: 'Inscripción de estudiantes', icon: <FaUserGraduate /> },
     ];
 
     // Determinar qué opciones mostrar según el rol
