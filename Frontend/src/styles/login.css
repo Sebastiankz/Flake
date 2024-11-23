@@ -78,15 +78,13 @@ p {
     color: #5a189a;
 }
 
-.typewriter-text {
-    font-size: 16px;
-    color: #6b7280;
+.typewriter-textLogin {
+    font-size: 20px; /* Tamaño más pequeño */
+    color: #a1a1a1; /* Gris claro */
+    font-weight: normal; /* Elimina el bold */
     margin-bottom: 30px;
     white-space: nowrap;
     overflow: hidden;
-    width: 100%;
-    max-width: 350px;
-    min-width: 350px;
     text-align: center;
 }
 
