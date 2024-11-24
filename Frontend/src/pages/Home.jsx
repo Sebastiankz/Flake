@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { FaUserGraduate, FaClipboardList, FaBook, FaClock } from 'react-icons/fa';
 import '../styles/home.css';
 
 const Home = () => {
     const [typedText, setTypedText] = useState('');
     const [showCursor, setShowCursor] = useState(true);
     const message = 'Bienvenido';
-    const navigate = useNavigate();
 
     // Efecto de máquina de escribir
     useEffect(() => {
@@ -36,9 +33,6 @@ const Home = () => {
         '/assets/carrusel/img8.jpg',
     ];
 
-    const handleNavigation = (path) => {
-        navigate(path);
-    };
 
     return (
         <div className="home-container aligned">
@@ -52,20 +46,6 @@ const Home = () => {
                 </div>
             </div>
 
-            <div className="buttons-container aligned">
-                <button className="rect-button" onClick={() => handleNavigation('/inscripcion')}>
-                    <FaUserGraduate className="button-icon" /> Inscripción de estudiantes
-                </button>
-                <button className="rect-button" onClick={() => handleNavigation('/asistencia')}>
-                    <FaClipboardList className="button-icon" /> Toma de asistencia
-                </button>
-                <button className="rect-button" onClick={() => handleNavigation('/notas')}>
-                    <FaBook className="button-icon" /> Toma de notas
-                </button>
-                <button className="rect-button" onClick={() => handleNavigation('/horario')}>
-                    <FaClock className="button-icon" /> Horario del tutor
-                </button>
-            </div>
 
             <div className="carousel-container aligned">
                 <div className="carousel-track auto-slide">

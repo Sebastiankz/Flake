@@ -1,0 +1,58 @@
+.rooms-page {
+    padding: 20px;
+}
+
+.typewriter-text {
+    font-size: 28px;
+    color: #333;
+    font-weight: bold;
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.button-container {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.btn-fetch {
+    background-color: #4b0e8a;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.table-container {
+    margin-top: 20px;
+    overflow-x: auto;
+}
+
+.flake-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 auto;
+    font-size: 16px;
+    text-align: left;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.flake-table thead {
+    background-color: #f0f0f0;
+    color: #333;
+}
+
+.flake-table th,
+.flake-table td {
+    padding: 12px;
+    text-align: left;
+    border: 1px solid #ddd;
+}
+
+.flake-table tr:hover {
+    background-color: #f9f9f9;
+}

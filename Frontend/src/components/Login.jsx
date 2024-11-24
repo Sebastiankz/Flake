@@ -59,7 +59,7 @@ const Login = ({ onLogin }) => {
                 <div className="login-card">
                     <FaSnowflake className="logo-icon" />
                     <h2>¡Bienvenido!</h2>
-                    <p className="typewriter-text">{typedText}</p>
+                    <p className="typewriter-textLogin">{typedText}</p>
                     <form onSubmit={handleSubmit}>
                         <div className="form-group">
                             <input
