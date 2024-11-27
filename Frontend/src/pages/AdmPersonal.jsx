@@ -12,6 +12,7 @@ const AdmPersonal = () => {
     full_name: "",
     role: "instructor",
     email: "",
+    direccion: "",
   });
 
   const [isEditing, setIsEditing] = useState(false);
@@ -58,6 +59,7 @@ const AdmPersonal = () => {
       full_name: "",
       role: "instructor",
       email: "",
+      direccion: "",
     });
     setShowForm(false);
     fetchUsers();
@@ -117,6 +119,7 @@ const AdmPersonal = () => {
               <th>Nombre Completo</th>
               <th>Rol</th>
               <th>Correo</th>
+              <th>Dirección</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -128,6 +131,7 @@ const AdmPersonal = () => {
                 <td>{user.full_name}</td>
                 <td>{user.role}</td>
                 <td>{user.email}</td>
+                <td>{user.direccion}</td>
                 <td>
                   <button
                     className="btn-edit"
@@ -197,6 +201,15 @@ const AdmPersonal = () => {
             value={formData.email}
             onChange={(e) =>
               setFormData({ ...formData, email: e.target.value })
+            }
+            required
+          />
+          <input
+            type="text"
+            placeholder="Dirección"
+            value={formData.direccion}
+            onChange={(e) =>
+              setFormData({ ...formData, direccion: e.target.value })
             }
             required
           />

@@ -121,7 +121,6 @@ const AdmEstudiantes = () => {
               <th>Grado</th>
               <th>Institución</th>
               <th>Aula</th>
-              <th>Horario</th>
               <th>Acciones</th>
             </tr>
           </thead>
@@ -135,7 +134,6 @@ const AdmEstudiantes = () => {
                 <td>{student.grade}</td>
                 <td>{student.institution}</td>
                 <td>{student.classroom}</td>
-                <td>{student.schedule}</td>
                 <td>
                   <div className="action-buttons">
                     <button className="btn-edit" onClick={() => handleEdit(student)}>
@@ -202,13 +200,7 @@ const AdmEstudiantes = () => {
             value={formData.classroom}
             onChange={handleInputChange}
           />
-          <input
-            type="text"
-            name="schedule"
-            placeholder="Horario"
-            value={formData.schedule}
-            onChange={handleInputChange}
-          />
+
           <button className="btn-save" type="submit">
             Guardar
           </button>

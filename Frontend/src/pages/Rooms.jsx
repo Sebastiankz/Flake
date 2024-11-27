@@ -5,7 +5,7 @@ import '../styles/rooms.css';
 const Rooms = () => {
     const [rooms, setRooms] = useState([]);
     const [typedText, setTypedText] = useState('');
-    const message = "Aulas Disponibles";
+    const message = "Aulas";
 
     useEffect(() => {
         let index = 0;
@@ -41,25 +41,21 @@ const Rooms = () => {
                     <table className="flake-table">
                         <thead>
                             <tr>
-                                <th>ID Aula</th>
+                                <th>Código DANE</th>
+                                <th>Institución</th>
+                                <th>Aula</th>
                                 <th>Grado (Texto)</th>
                                 <th>Grado (Número)</th>
-                                <th>Jornada</th>
-                                <th>Grupo</th>
-                                <th>ID Profesor</th>
-                                <th>Código DANE</th>
                             </tr>
                         </thead>
                         <tbody>
                             {rooms.map((room) => (
                                 <tr key={room.id_aula}>
+                                    <td>{room.cod_DANE}</td>
+                                    <td>{room.institucion}</td>
                                     <td>{room.id_aula}</td>
                                     <td>{room.grad_text}</td>
                                     <td>{room.grad_num}</td>
-                                    <td>{room.jornada}</td>
-                                    <td>{room.num_grupo}</td>
-                                    <td>{room.id_profesor}</td>
-                                    <td>{room.cod_DANE}</td>
                                 </tr>
                             ))}
                         </tbody>

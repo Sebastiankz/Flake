@@ -37,7 +37,7 @@ const Schedule = () => {
             const response = await axios.get(`http://localhost:5000/schedule?classroom=${selectedClassroom}`);
             if (response.data && Array.isArray(response.data)) {
                 const formattedEvents = response.data.map((event) => ({
-                    title: `${event.tutor} - ${event.subject}`,
+                    title: `${event.classroom} - ${event.grade}`,
                     start: new Date(event.start_time),
                     end: new Date(event.end_time),
                 }));

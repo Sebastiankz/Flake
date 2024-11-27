@@ -79,7 +79,6 @@ app.get('/options', async (req, res) => {
         classrooms: 'SELECT DISTINCT classroom FROM students',
         grades: 'SELECT DISTINCT grade FROM students',
         institutions: 'SELECT DISTINCT institution FROM students',
-        schedules: 'SELECT DISTINCT schedule FROM students',
     };
 
     try {
@@ -100,9 +99,9 @@ app.get('/options', async (req, res) => {
 
 // Ruta para obtener estudiantes filtrados
 app.get('/students', (req, res) => {
-    const { classroom, grade, institution, schedule, date } = req.query;
+    const { classroom, grade, institution, date } = req.query;
 
-    if (!classroom || !grade || !institution || !schedule || !date) {
+    if (!classroom || !grade || !institution || !date) {
         return res.status(400).json({ error: 'Faltan parámetros para filtrar estudiantes' });
     }
 
@@ -111,10 +110,10 @@ app.get('/students', (req, res) => {
         FROM students s
         LEFT JOIN attendance a ON s.id = a.student_id
         WHERE s.classroom = ? AND s.grade = ? AND s.institution = ?
-          AND a.time = ? AND a.date = ?
+        AND a.date = ?
     `;
 
-    db.query(query, [classroom, grade, institution, schedule, date], (err, results) => {
+    db.query(query, [classroom, grade, institution, date], (err, results) => {
         if (err) {
             console.error('Error en la consulta de estudiantes:', err);
             res.status(500).json({ error: 'Error al obtener estudiantes' });
@@ -126,9 +125,9 @@ app.get('/students', (req, res) => {
 
 // Ruta para actualizar asistencia
 app.post('/update-attendance', (req, res) => {
-    const { studentIds, date, schedule, status } = req.body;
+    const { studentIds, date, status } = req.body;
 
-    console.log('Datos recibidos para asistencia:', { studentIds, date, schedule, status });
+    console.log('Datos recibidos para asistencia:', { studentIds, date, status });
 
     if (!studentIds || studentIds.length === 0) {
         return res.status(400).json({ error: 'No se seleccionaron estudiantes' });
@@ -137,10 +136,10 @@ app.post('/update-attendance', (req, res) => {
     const query = `
         UPDATE attendance
         SET status = ?
-        WHERE student_id IN (?) AND date = ? AND time = ?
+        WHERE student_id IN (?) AND date = ?
     `;
 
-    db.query(query, [status, studentIds, date, schedule], (err, result) => {
+    db.query(query, [status, studentIds, date], (err, result) => {
         if (err) {
             console.error('Error en la consulta:', query, err);
             return res.status(500).json({ error: 'Error al actualizar asistencia' });
@@ -183,9 +182,32 @@ app.post('/add-students', (req, res) => {
     });
 });
 
-// Ruta para actualizar las notas de los estudiantes
-app.post('/update-grades', (req, res) => {
-    const { grades, date, schedule } = req.body;
+app.get('/students', async (req, res) => {
+    console.log('Parámetros recibidos:', req.query);
+
+    const { classroom, grade, institution, date } = req.query;
+
+    if (!classroom || !grade || !institution || !date) {
+        return res.status(400).json({ error: 'Faltan parámetros obligatorios.' });
+    }
+
+    try {
+        const [students] = await db.promise().query(`
+            SELECT id, full_name, phone_number, email
+            FROM students
+            WHERE classroom = ? AND grade = ? AND institution = ?
+        `, [classroom, grade, institution]);
+
+        res.json(students);
+    } catch (err) {
+        console.error('Error al obtener estudiantes:', err);
+        res.status(500).json({ error: 'Error al obtener estudiantes' });
+    }
+});
+
+
+app.post('/update-grades', async (req, res) => {
+    const { grades, date } = req.body;
 
     if (!grades || grades.length === 0) {
         return res.status(400).json({ error: 'No se proporcionaron notas para actualizar' });
@@ -197,22 +219,39 @@ app.post('/update-grades', (req, res) => {
         return res.status(400).json({ error: 'Algunas notas están fuera del rango permitido (0-5)' });
     }
 
-    const query = `
-        INSERT INTO grades (student_id, date, time, grade)
-        VALUES ? 
-        ON DUPLICATE KEY UPDATE grade = VALUES(grade)
-    `;
+    try {
+        // Validar que los IDs existan en la base de datos
+        const studentIds = grades.map(g => g.id);
+        const [rows] = await db.promise().query(
+            'SELECT id FROM students WHERE id IN (?)',
+            [studentIds]
+        );
 
-    const values = grades.map(g => [g.id, date, schedule, g.grade]);
+        const validIds = rows.map(row => row.id);
+        const filteredGrades = grades.filter(g => validIds.includes(g.id));
 
-    db.query(query, [values], (err, result) => {
-        if (err) {
-            console.error('Error al actualizar notas:', err);
-            res.status(500).json({ error: 'Error al actualizar notas' });
-        } else {
-            res.json({ success: true, message: 'Notas actualizadas exitosamente' });
+        if (filteredGrades.length === 0) {
+            return res.status(400).json({ error: 'Ninguno de los IDs proporcionados existe en la base de datos' });
         }
-    });
+
+        // Generar la consulta SQL
+        const query = `
+            INSERT INTO grades (student_id, date, grade)
+            VALUES ?
+            ON DUPLICATE KEY UPDATE grade = VALUES(grade)
+        `;
+
+        // Crear los valores para la consulta
+        const values = filteredGrades.map(g => [g.id, date, g.grade]);
+
+        // Ejecutar la consulta
+        await db.promise().query(query, [values]);
+
+        res.json({ success: true, message: 'Notas actualizadas exitosamente' });
+    } catch (err) {
+        console.error('Error al actualizar notas:', err);
+        res.status(500).json({ error: 'Error al actualizar notas' });
+    }
 });
 
 // Ruta para obtener las aulas disponibles
@@ -239,7 +278,7 @@ app.get('/schedule', (req, res) => {
     }
 
     const query = `
-        SELECT tutor, subject, start_time, end_time 
+        SELECT *
         FROM schedules 
         WHERE classroom = ?
     `;
@@ -250,8 +289,9 @@ app.get('/schedule', (req, res) => {
             res.status(500).json({ error: 'Error al obtener el horario' });
         } else {
             const formattedResults = results.map((row) => ({
-                tutor: row.tutor,
-                subject: row.subject,
+                classroom: row.classroom,
+                grade: row.grade,
+                institucion : row.institucion,
                 start_time: row.start_time,
                 end_time: row.end_time,
             }));

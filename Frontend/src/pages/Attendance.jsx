@@ -6,11 +6,9 @@ const Attendance = () => {
     const [classrooms, setClassrooms] = useState([]);
     const [grades, setGrades] = useState([]);
     const [institutions, setInstitutions] = useState([]);
-    const [schedules, setSchedules] = useState([]);
     const [selectedClassroom, setSelectedClassroom] = useState('');
     const [selectedGrade, setSelectedGrade] = useState('');
     const [selectedInstitution, setSelectedInstitution] = useState('');
-    const [selectedSchedule, setSelectedSchedule] = useState('');
     const [selectedDate, setSelectedDate] = useState('');
     const [students, setStudents] = useState([]);
     const [selectedStudents, setSelectedStudents] = useState([]);
@@ -40,7 +38,6 @@ const Attendance = () => {
             setClassrooms(response.data.classrooms);
             setGrades(response.data.grades);
             setInstitutions(response.data.institutions);
-            setSchedules(response.data.schedules);
         } catch (error) {
             console.error('Error al obtener opciones:', error);
         }
@@ -50,7 +47,7 @@ const Attendance = () => {
     const fetchStudents = async () => {
         try {
             const response = await axios.get('http://localhost:5000/students', {
-                params: { classroom: selectedClassroom, grade: selectedGrade, institution: selectedInstitution, schedule: selectedSchedule, date: selectedDate },
+                params: { classroom: selectedClassroom, grade: selectedGrade, institution: selectedInstitution, date: selectedDate },
                 withCredentials: true,
             });
             setStudents(response.data);
@@ -96,7 +93,6 @@ const sendChanges = async () => {
         const response = await axios.post('http://localhost:5000/update-attendance', {
             studentIds: updatedStatus.map(student => student.id), // Lista de IDs de estudiantes
             date: selectedDate, // Fecha seleccionada
-            schedule: selectedSchedule, // Horario seleccionado
             status: updatedStatus[0]?.status || 'No asignado', // El estatus seleccionado
         });
 
@@ -140,13 +136,6 @@ const sendChanges = async () => {
                     <option value="">Institución</option>
                     {institutions.map((institution) => (
                         <option key={institution} value={institution}>{institution}</option>
-                    ))}
-                </select>
-
-                <select onChange={(e) => setSelectedSchedule(e.target.value)}>
-                    <option value="">Horario</option>
-                    {schedules.map((schedule) => (
-                        <option key={schedule} value={schedule}>{schedule}</option>
                     ))}
                 </select>
 
